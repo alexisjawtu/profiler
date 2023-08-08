@@ -1,5 +1,6 @@
-#include "SetParameter.h"
 #include <sys/stat.h>
+
+#include "SetParameter.h"
 
 
 using namespace std;
@@ -10,6 +11,7 @@ struct stat statDirectory;
 
 SetParameter::SetParameter(int argc, char* argv[]) {
 
+    output_folder     = string(".");
     argv_num_of_input = 17;
 
     if (argc == 1)
@@ -33,7 +35,6 @@ void SetParameter::get_from_ui() {
     cout << "Input the Thickness of the wafer (unit: microns) ";
     cin >> user_thickness_of_inner_wafer;
     cout << endl << endl;
-    user_thickness_of_inner_wafer *= 0.1 * 0.001;
 
     cout << "Now, please input the parameters for the profile mesh.\n"
             "Please refer to pictures and examples in the documentation." << endl << endl;
@@ -74,7 +75,7 @@ void SetParameter::get_from_args(int argc, char* argv[]) {
         atof(argv[5]),
         atof(argv[8]),
         atof(argv[11]),
-        atof(argv[12])
+        atof(argv[14])
     };
 
     profile_parameters["Floor"] = valarray<double> {

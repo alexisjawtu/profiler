@@ -16,6 +16,13 @@ Point::Point(const Point& point)
     m_y = point.m_y;
 }
 
+/*
+Point::Point(const Point3D& point3D)
+{
+    m_x = point3D.x;
+    m_y = point3D.y;
+}
+*/
 
 Point::~Point() {}
 
@@ -61,5 +68,5 @@ ostream& operator<<(ostream& o, const Point& p) {
 }
 
 double Point::norm(){
-    return sqrt(m_x * m_x + m_y * m_y);
+    return sqrt(m_x*m_x+m_y*m_y);
 }
