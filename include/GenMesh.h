@@ -1,5 +1,3 @@
-#pragma once
-
 #include <string>
 #include <list>
 #include <vector>
@@ -110,6 +108,7 @@ class GenMesh
     void print_vector(vector<std::size_t>& v);
     void print_vector(vector<double>& v);
     void print_vector(vector<bool>& v);
+    void find_global_coordinates_for_boundary();
     void make_3D_points();
     void build_profile_mesh(int number_of_points_in_the_input);
 

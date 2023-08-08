@@ -19,41 +19,18 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    cout << endl << "Profiler v1.1.0 July 2023." << endl;
-    cout << endl << "Reminder: The boundary points in the input are assumed\n"
+    cout << endl << "Profiler v1.2.0 August 2023." 
+                    "\vReminder: The boundary points in the input are assumed\n"
                     "to be the 2D points as stored in "
-                    "vector<size_t> GenMesh::bdr_pointlist." << endl << endl;
+                    "vector<size_t> GenMesh::bdr_pointlist." << endl;
 
     ifstream boundary_data ("bdr_nodes.dat");
+    ifstream elements_data ("elements.dat");
+    ifstream nodes_data    ("nodes.dat");
 
-    if (!boundary_data)
+    if (!boundary_data || !nodes_data || !elements_data)
     {
-        cout << "Something is wrong with the input file of boundary nodes.\n" << endl;
-        exit(1);
-    }
-
-    /**
-     * 
-     * Get the program to read the profile diagonals
-     * 
-     *   Cases of diagonals:
-     *   
-     *   Viewing the profile walls from <<OUTSIDE>> the wafer, those are:
-     *  
-     *              o------o                  o------o
-     *     case 0:  |   /  |         case 1:  |  \   |
-     *              |  /   |                  |   \  |
-     *              o------o                  o------o
-     *  
-     * Please make sure that the number of diagonals is the same as the number
-     * of boundary 2D points.
-     * 
-     */
-    ifstream diagonals_data ("bdr_diagonals.dat");
-
-    if (!diagonals_data)
-    {
-        cout << "Something is wrong with the diagonals input file.\n" << endl;
+        cout << "\vSomething is wrong with the input files.\n" << endl;
         exit(1);
     }
 
@@ -70,15 +47,12 @@ int main(int argc, char *argv[])
                         parameters.profile_parameters
                     );
 
-    int length_of_one_line_in_the_input = 100;  // Three floats of 22 characters long. No more.
     int comma;                                  // Stores the places of the commas.
-    double coordx;
-    double coordy;
+    double coordx;                              // 2D coordinates of boundary points.
+    double coordy;                              
+    int row;                                    // Stores the index of a tetrahedron.
     int index = 0;
-
-    boundary_data.seekg(0, boundary_data.end);  // set position at the end
-    int length = boundary_data.tellg();         // tell which position is the end
-    boundary_data.seekg(0, boundary_data.beg);  // set position back to beginning
+    vector<int> element;                        // Stores a tetrahedron.
 
     char* raw_point = new char[100];              
     boundary_data.getline(raw_point, 100);
@@ -103,11 +77,59 @@ int main(int argc, char *argv[])
         index ++;
     }
 
-    for (int i = 0; i < index; ++i)
+    delete[] raw_point;
+    boundary_data.close();
+
+    comma = 0;
+    elements_data.seekg(0, elements_data.end);  // set position at the end
+    int length = elements_data.tellg();         // tell which position is the end
+    elements_data.seekg(0, elements_data.beg);  // set position back to beginning
+
+    char* raw_tetrahedron = new char[length];              
+    elements_data.getline(raw_tetrahedron, length);
+    string tetrahedron(raw_tetrahedron);
+
+    row = 0;
+    while (!elements_data.eof())
     {
-        genmesh->profile_diagonals.push_back(diagonals_data.get() == '1');
+        comma = tetrahedron.find_first_of(",");
+        element.push_back(stoi(tetrahedron.substr(0, comma)));
+        tetrahedron = tetrahedron.substr(comma + 1);
+
+        comma = tetrahedron.find_first_of(",");
+        element.push_back(stoi(tetrahedron.substr(0, comma)));
+        tetrahedron = tetrahedron.substr(comma + 1);
+
+        comma = tetrahedron.find_first_of(",");
+        element.push_back(stoi(tetrahedron.substr(0, comma)));
+        tetrahedron = tetrahedron.substr(comma + 1);
+
+        comma = tetrahedron.find_first_of(",");
+        element.push_back(stoi(tetrahedron.substr(0, comma)));
+
+        genmesh->elements_by_vertices.emplace(row, element);
+        
+        elements_data.getline(raw_tetrahedron, length);
+        tetrahedron = string(raw_tetrahedron);        
+        element = {};
+        row += 1;
     }
 
+    delete[] raw_tetrahedron;
+    elements_data.close();
+
+    while ()
+    {
+        CONTINUE HERE: falta todo el parrafo para tomar los nodes en R3.
+            
+            * buscar los indices del borde y borrarlo
+            * ATENCION pensar en como usar un VALARRAY para la busqueda
+                       de un double.
+            * TAREA importante: pasar a funciones en GenMesh.cpp todo lo
+                                de este archivo.
+    }
+
+    genmesh->find_global_coordinates_for_boundary();
     genmesh->make_3D_points();
     genmesh->build_profile_mesh(index);
     genmesh->stream_elements_out();
