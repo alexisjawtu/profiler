@@ -32,9 +32,12 @@ SetParameter::~SetParameter() {}
 
 void SetParameter::get_from_ui() {
 
+    string str_input;
+
     cout << "Input the Thickness of the wafer (unit: microns) ";
-    cin >> user_thickness_of_inner_wafer;
-    cout << endl << endl;
+    getline(cin, str_input);
+    stringstream(str_input) >> user_thickness_of_inner_wafer;
+    cout << "\n\v";
 
     cout << "Now, please input the parameters for the profile mesh.\n"
             "Please refer to pictures and examples in the documentation." << endl << endl;
@@ -48,7 +51,8 @@ void SetParameter::get_from_ui() {
     for (int i = 0; i < 5; i++) {
         for (auto &name: parameter_names) {
             printf("Set the profile %s %d (microns): ", name, i + 1);
-            cin >> profile_parameters[name][i];
+            getline(cin, str_input);
+            stringstream(str_input) >> profile_parameters[name][i];
         }
     }
 

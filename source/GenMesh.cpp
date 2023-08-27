@@ -64,39 +64,6 @@ void GenMesh::stream_elements_out() {
 }
 
 
-// TODO: use a template here.
-void GenMesh::print_vector(vector<int>& v) {
-    for (auto& d: v) {
-        cout << d << ", ";
-    }
-    cout << "\n";
-}
-
-
-void GenMesh::print_vector(vector<std::size_t>& v) {
-    for (auto& d: v) {
-        cout << d << ", ";
-    }
-    cout << "\n";
-}
-
-
-void GenMesh::print_vector(vector<double>& v) {
-    for (auto& d: v) {
-        cout << d << ", ";
-    }
-    cout << "\n";
-}
-
-
-void GenMesh::print_vector(vector<bool>& v) {
-    for (int i = 0; i < v.size(); i++) {
-        cout << boolalpha << v[i] << ", ";
-    }
-    cout << "\n";
-}
-
-
 Point GenMesh::project2D(Point3D p) {
     return Point(p.x, p.y);
 }

@@ -1,5 +1,5 @@
-#include <iostream>
 #include <string>
+#include <iostream>
 
 #include "GenMesh.h"
 #include "SetParameter.h"
@@ -17,12 +17,28 @@ using namespace std;
 */
 
 
+template <class T> void print(T data)
+{
+    cout << T << "\n";
+}
+
+
+template <class T> void print_vector(T& v)
+{
+    for (auto& d: v)
+    {
+        cout << boolalpha << d << ", ";
+    }
+    cout << "\n";
+}
+
+
 int main(int argc, char *argv[])
 {
-    cout << endl << "Profiler v1.2.0 August 2023." 
-                    "\vReminder: The boundary points in the input are assumed\n"
-                    "to be the 2D points as stored in "
-                    "vector<size_t> GenMesh::bdr_pointlist." << endl;
+    print("\nProfiler v1.2.0 August 2023." 
+          "\vReminder: The boundary points in the input are assumed\n"
+          "to be the 2D points as stored in "
+          "vector<size_t> GenMesh::bdr_pointlist.");
 
     ifstream boundary_data ("bdr_nodes.dat");
     ifstream elements_data ("elements.dat");
@@ -30,12 +46,12 @@ int main(int argc, char *argv[])
 
     if (!boundary_data || !nodes_data || !elements_data)
     {
-        cout << "\vSomething is wrong with the input files.\n" << endl;
+        print("\vSomething is wrong with the input files.\n");
         exit(1);
     }
 
-    bool debug_flag = false;
-    int layer       = 2;
+    bool debug_flag {false};
+    int layer {2};
 
     SetParameter parameters = SetParameter(argc, argv);
     
@@ -47,11 +63,12 @@ int main(int argc, char *argv[])
                         parameters.profile_parameters
                     );
 
+    int current_node {0};
     int comma;                                  // Stores the places of the commas.
     double coordx;                              // 2D coordinates of boundary points.
     double coordy;                              
     int row;                                    // Stores the index of a tetrahedron.
-    int index = 0;
+    int index {0};                              // Stores the index of a 2D point.
     vector<int> element;                        // Stores a tetrahedron.
 
     char* raw_point = new char[100];              
@@ -61,11 +78,11 @@ int main(int argc, char *argv[])
     while (!boundary_data.eof())
     {
         comma  = point.find_first_of(",");
-        coordx = stod(point.substr(0, comma));
+        stringstream(point.substr(0, comma)) >> coordx;
         point  = point.substr(comma + 1);
 
         comma  = point.find_first_of(",");
-        coordy = stod(point.substr(0, comma));
+        stringstream(point.substr(0, comma)) >> coordy;
         point  = point.substr(comma + 1);
 
         genmesh->bdr_pointlist.push_back(Point(coordx, coordy));
@@ -82,7 +99,7 @@ int main(int argc, char *argv[])
 
     comma = 0;
     elements_data.seekg(0, elements_data.end);  // set position at the end
-    int length = elements_data.tellg();         // tell which position is the end
+    int length {elements_data.tellg()};         // tell which position is the end
     elements_data.seekg(0, elements_data.beg);  // set position back to beginning
 
     char* raw_tetrahedron = new char[length];              
@@ -93,26 +110,29 @@ int main(int argc, char *argv[])
     while (!elements_data.eof())
     {
         comma = tetrahedron.find_first_of(",");
-        element.push_back(stoi(tetrahedron.substr(0, comma)));
+        stringstream(tetrahedron.substr(0, comma)) >> current_node;
+        element.push_back(current_node);
         tetrahedron = tetrahedron.substr(comma + 1);
 
         comma = tetrahedron.find_first_of(",");
-        element.push_back(stoi(tetrahedron.substr(0, comma)));
+        stringstream(tetrahedron.substr(0, comma)) >> current_node;
+        element.push_back(current_node);
         tetrahedron = tetrahedron.substr(comma + 1);
 
         comma = tetrahedron.find_first_of(",");
-        element.push_back(stoi(tetrahedron.substr(0, comma)));
+        stringstream(tetrahedron.substr(0, comma)) >> current_node;
+        element.push_back(current_node);
         tetrahedron = tetrahedron.substr(comma + 1);
 
         comma = tetrahedron.find_first_of(",");
-        element.push_back(stoi(tetrahedron.substr(0, comma)));
+        stringstream(tetrahedron.substr(0, comma)) >> current_node;
+        element.push_back(current_node);
 
         genmesh->elements_by_vertices.emplace(row, element);
-        
         elements_data.getline(raw_tetrahedron, length);
         tetrahedron = string(raw_tetrahedron);        
-        element = {};
-        row += 1;
+        element     = {};
+        row        += 1;
     }
 
     delete[] raw_tetrahedron;
@@ -127,6 +147,7 @@ int main(int argc, char *argv[])
                        de un double.
             * TAREA importante: pasar a funciones en GenMesh.cpp todo lo
                                 de este archivo.
+            * cambiar todos los print o cout por la template print<T>
     }
 
     genmesh->find_global_coordinates_for_boundary();
