@@ -393,7 +393,6 @@ void GenMesh::reset_profile_objects() {
             all_wafer_Point3D[indices_for_outer_facets[i][3]]
         });
     }
-
 }
 
 
