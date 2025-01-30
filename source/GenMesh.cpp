@@ -432,6 +432,18 @@ void GenMesh::reset_profile_objects() {
 }
 
 
+void GenMesh::new_make_3D_points(vector<size_t>& in_vector) {
+    double local_z;
+
+    for (int l = number_of_layers - 1; l >= 0; l--) {
+        local_z = l * height_of_layer;
+        for (int j = 0; j < in_vector.size(); j++) {
+            all_wafer_Point3D.push_back(Point3D(pointlist[in_vector[j]], local_z));
+        }
+    }
+}
+
+
 void GenMesh::make_3D_points() {
     double local_z;
 
