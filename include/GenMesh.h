@@ -88,21 +88,8 @@ class GenMesh
     map<pair<bool, bool>, pair<int, int>> case_translator;
     map<pair<bool, bool>, pair<bool, bool>> outer_diagonals_translator;
 
-    /*double potential(const Point& p);
-    double distance(const Point& p1, const Point& p2);
-    Point GradPotential(const Point& p, bool is_unit = true);
-    Point get_next_inital_p(double value);
-    Point get_next_inital_adjoint_p(double value);
-
-    Point get_rotation_point(const Point& p, double theta, double h);
-    Point get_rotation_point(const Point& p, double theta, double h, const int direct = 1);
-
-    Point get_next_p_on_contour(const Point& p0, double h, double value);
-    Point get_next_p_on_contour(const Point& p0, double h, double value, const int direct = 1);
-*/
     Point get_right_orthogonal(Point vector2D);
     void radial_sort_boundary_points();
-
     
     void orient_profile_diagonals();
     void add_tetrahedra_within_prisms();
@@ -111,41 +98,11 @@ class GenMesh
     void reset_profile_objects();
     double measure(vector<int>& tetra);
 
-    // int boundary_adjust_type1(Point& P, double h, bool is_around_probe = false);
-    // int boundary_adjust_type2(Point& P, double h, bool is_around_probe = false);
-    // int boundary_adjust_type3(Point& P, double h, bool is_around_probe = false);
-    // int boundary_adjust_type4(Point& P, double h, bool is_around_probe = false);
-// 
-    // bool is_inner_layer(Point& P, double h);
-// 
-    // void create_inner_points();
-    // void create_outer_points_type1();
-    // void create_outer_points_type2();
-    // void create_outer_points_type3();
-    // void create_outer_points_type4();
-// 
-    // int homogenize_point_distribuition_around_probe(double radious = 0.0);
-    // 
-    // void get_dist_probe_to_bound_type1();
-    // void get_dist_probe_to_bound_type2();
-    // void get_dist_probe_to_bound_type3();
-    // void get_dist_probe_to_bound_type4();
-
     ofstream _test_;
 
     public:
     
     GenMesh(
-        // to_delete const int type_,
-        // to_delete const Point& pA_,
-        // to_delete const Point& pD_,
-        // to_delete double H_,
-        // to_delete double h_,
-        // to_delete double R_,
-        // to_delete double theta_,
-        // to_delete double L1_,
-        // to_delete double L2_,
-        // to_delete double angle_difference_,
         int n_layers,
         double h_layer,
         bool debug_flag,
@@ -169,8 +126,6 @@ class GenMesh
     ~GenMesh();
 
     Point project2D(Point3D p);
-
-    // vector<double> convert_double_lst();
 
     vector<Point> get_boundary_points() const;
     void stream_diagonals_out();
