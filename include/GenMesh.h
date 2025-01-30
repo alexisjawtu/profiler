@@ -110,6 +110,7 @@ class GenMesh
     void print_vector(vector<bool>& v);
     void find_global_coordinates_for_boundary();
     void make_3D_points();
+    void new_make_3D_points(vector<size_t>& in_vector);
     void build_profile_mesh(int number_of_points_in_the_input);
 
 };
