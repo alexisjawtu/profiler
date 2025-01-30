@@ -137,7 +137,6 @@ class GenMesh
     void print_vector(vector<double>& v);
     void print_vector(vector<bool>& v);
     void make_3D_points();
-    // void new_make_3D_points(vector<size_t>& in_vector);
     void build_profile_mesh(int number_of_points_in_the_input);
 
 };
