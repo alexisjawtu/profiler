@@ -63,7 +63,7 @@ class GenMesh
 
     Point get_right_orthogonal(Point vector2D);
     void radial_sort_boundary_points();
-    
+    void new_radial_sort_boundary_points();
     void orient_profile_diagonals();
     void add_tetrahedra_within_prisms();
     void construct_front_nodes_of_brick(vector<Point3D>& back_wall, int iteration);
