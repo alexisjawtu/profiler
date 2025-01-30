@@ -140,48 +140,6 @@ void GenMesh::radial_sort_boundary_points() {
 }
 
 
-
-// void GenMesh::new_radial_sort_boundary_points() {
-//     /**
-
-//     *   This is on testing stage.
-
-//     *   After that, we replace the former radial_sort_boundary_points()
-
-//     */
-//     vector<Point> original_points(bdr_pointlist);
-
-//     int fixed_size = original_points.size();
-//     int minimal_index;
-//     Point minimal_point;
-
-//     for (int j = 0; j < fixed_size; j++) {
-
-//         minimal_index = 0;
-//         minimal_point = original_points[0];
-
-//         for (int r = 1; r < original_points.size(); r++) {
-//             if (original_points[r] < minimal_point) {
-//                 minimal_point = original_points[r];
-//                 minimal_index = r;
-//             }
-//         }
-
-//         sorted_boundary_points.emplace(j, Point(minimal_point));
-//         radial_sorted_upper_bdr_indices.push_back(upper_bdr_points_global_indices[minimal_index]);
-
-//         original_points.erase(original_points.begin() + minimal_index);
-//         upper_bdr_points_global_indices.erase(upper_bdr_points_global_indices.begin() + minimal_index);
-//     }
-// }
-
-
-
-// vector<Point> GenMesh::get_boundary_points() const {
-//     return bdr_pointlist;
-// }
-
-
 void GenMesh::orient_profile_diagonals() {
     /*
     
