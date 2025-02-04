@@ -8,14 +8,13 @@ GenMesh::GenMesh(
     string prefix,
     map<string, valarray<double>>& profile_params
 ):
-    
+
     number_of_layers(n_layers),
     height_of_layer(h_layer),
     debug(debug_flag),
     output_dir(prefix)
 
 {
-
 
     // TODO: remove these three, as we can call the map<> profile_params directly
     delta_over_plane_xy = profile_params["Width"];  // {delta_xy_0, delta_xy_1, delta_xy_2, delta_xy_3, delta_xy_4};
@@ -56,39 +55,6 @@ void GenMesh::stream_elements_out() {
                 << current[2] << ", " << current[3] << endl;
     }
     outfile.close();
-}
-
-
-// TODO: use a template here.
-void GenMesh::print_vector(vector<int>& v) {
-    for (auto& d: v) {
-        cout << d << ", ";
-    }
-    cout << "\n";
-}
-
-
-void GenMesh::print_vector(vector<std::size_t>& v) {
-    for (auto& d: v) {
-        cout << d << ", ";
-    }
-    cout << "\n";
-}
-
-
-void GenMesh::print_vector(vector<double>& v) {
-    for (auto& d: v) {
-        cout << d << ", ";
-    }
-    cout << "\n";
-}
-
-
-void GenMesh::print_vector(vector<bool>& v) {
-    for (int i = 0; i < v.size(); i++) {
-        cout << boolalpha << v[i] << ", ";
-    }
-    cout << "\n";
 }
 
 
@@ -421,7 +387,6 @@ void GenMesh::reset_profile_objects() {
             all_wafer_Point3D[indices_for_outer_facets[i][3]]
         });
     }
-
 }
 
 
@@ -534,7 +499,7 @@ void GenMesh::build_profile_mesh(int input_size) {
 
 }
 
-// TODO: after Type 2
+// TODO: to study the condition of the matrix: 
 // double max()
 // double min()
 // report the max of the whole mesh
