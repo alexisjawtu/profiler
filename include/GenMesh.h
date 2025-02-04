@@ -1,5 +1,3 @@
-#pragma once
-
 #include <string>
 #include <list>
 #include <vector>
@@ -37,39 +35,15 @@ class GenMesh
 {
     private:
 
-    const int wtype;
-    const Point pA, pD;
-    const double probe_theta;
-    const float minimum_float = 1.17549e-38;
-
     bool debug;
     bool add_tetrahedra_within;
     string output_dir;
-
-    Point pAD;
-    Point Orifla_start, Orifla_mid, Orifla_end, Orifla_2nd_start, Orifla_2nd_mid, Orifla_2nd_end;
-    double h_max, h_min, R;
-    double innerR;
-    double inner_max_h;
-    double dist_probe_to_bound_max;
-    double dist_probe_to_bound_min;
-    double dist_AD;
-    double L1, L2;
-    double angle_difference;
-    double angle_orifla_start, angle_orifla_end, angle_orifla_mid, half_orifla_angle;
-    double angle_2nd_orifla_start, angle_2nd_orifla_end, angle_2nd_orifla_mid, half_2nd_orifla_angle;
-    double angle_notch_start, angle_notch_end;
-    double Owidth, Foffset;
-    double arg_pAD;
 
     int number_of_layers;
     // TODO: rename the following two as "base case" "general case"
     int number_of_outer_walls = 0;
     int number_of_bricks_in_wall = 0;
     double height_of_layer;
-
-    Point direc_AD; //From A to D. Unit
-    Point pCenter;
 
     // TODO: estos 3 pueden sacarse y usar directo el map
     valarray<double> upper_z; 
@@ -127,7 +101,6 @@ class GenMesh
 
     Point project2D(Point3D p);
 
-    vector<Point> get_boundary_points() const;
     void stream_diagonals_out();
     void stream_elements_out();
     void stream_nodes_out();
