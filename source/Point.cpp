@@ -16,7 +16,6 @@ Point::Point(const Point& point)
     m_y = point.m_y;
 }
 
-
 Point::~Point() {}
 
 Point Point::operator+(const Point& p) const {

@@ -4,6 +4,7 @@
 #include <array>
 #include <valarray>
 #include <map>
+#include <sstream>
 
 
 using namespace std;

@@ -1,7 +1,8 @@
+#include <string>
 #include <iostream>
+
 #include "GenMesh.h"
 #include "SetParameter.h"
-#include <string>
 
 
 using namespace std;
@@ -14,6 +15,22 @@ using namespace std;
 *   It depends on the architecture.
 
 */
+
+
+template <class T> void print(T data)
+{
+    cout << T << "\n";
+}
+
+
+template <class T> void print_vector(T& v)
+{
+    for (auto& d: v)
+    {
+        cout << boolalpha << d << ", ";
+    }
+    cout << "\n";
+}
 
 
 int main(int argc, char *argv[])
@@ -34,9 +51,9 @@ int main(int argc, char *argv[])
     
     GenMesh* genmesh = new GenMesh(
                         layer,
-                        dt,
+                        parameters.user_thickness_of_inner_wafer,
                         debug_flag,
-                        prefix,
+                        parameters.output_folder,
                         parameters.profile_parameters
                     );
 
@@ -111,6 +128,7 @@ int main(int argc, char *argv[])
         genmesh->profile_diagonals.push_back(diagonals_data.get() == '1');
     }
 
+    genmesh->find_global_coordinates_for_boundary();
     genmesh->make_3D_points();
     genmesh->build_profile_mesh(index);
     genmesh->stream_elements_out();
