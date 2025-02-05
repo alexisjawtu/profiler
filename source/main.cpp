@@ -35,15 +35,15 @@ template <class T> void print_vector(T& v)
 
 int main(int argc, char *argv[])
 {
-    cout << endl << "Profiler v1.1.0 July 2023." << endl;
-    cout << endl << "Reminder: The boundary points in the input are assumed\n"
-                    "to be the 2D points as stored in "
-                    "vector<size_t> GenMesh::bdr_pointlist." << endl << endl;
+    print("\nProfiler v1.2.0 August 2023." 
+          "\vReminder: The boundary points in the input are assumed\n"
+          "to be the 2D points as stored in "
+          "vector<size_t> GenMesh::bdr_pointlist.");
 
-    bool debug_flag = false;
-    int layer        = 2;
 
     string prefix(".");
+    bool debug_flag {false};
+    int layer {2};
 
     SetParameter parameters = SetParameter(argc, argv);
     double thickness_of_inner_wafer = parameters.user_thickness_of_inner_wafer;
