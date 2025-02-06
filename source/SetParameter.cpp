@@ -40,7 +40,7 @@ void SetParameter::get_from_ui() {
     cout << "\n\v";
 
     cout << "Now, please input the parameters for the profile mesh.\n"
-            "Please refer to pictures and examples in the documentation." << endl << endl;
+            "Please refer to pictures and examples in the documentation.\n\n";
 
     array<const char*, 3> parameter_names ({"Ceiling", "Floor", "Width"});
 

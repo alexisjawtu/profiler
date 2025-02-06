@@ -16,7 +16,7 @@ class SetParameter
 
     string output_folder;
     int type;                      
-    double scale;                  
+    double scale; 
     double angle_between_cuts = 0; 
     double user_diameter_for_wafer;
     double L1 = 0;

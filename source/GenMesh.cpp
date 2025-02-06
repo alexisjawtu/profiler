@@ -17,9 +17,9 @@ GenMesh::GenMesh(
 {
 
     // TODO: remove these three, as we can call the map<> profile_params directly
-    delta_over_plane_xy = profile_params["Width"];
-    upper_z             = profile_params["Ceiling"];
-    lower_z             = profile_params["Floor"];
+    delta_over_plane_xy = profile_params["Width"];  // {delta_xy_0, delta_xy_1, delta_xy_2, delta_xy_3, delta_xy_4};
+    upper_z             = profile_params["Ceiling"];  // {upper_z_0, upper_z_1, upper_z_2, upper_z_3, upper_z_4};
+    lower_z             = profile_params["Floor"];  // {lower_z_0, lower_z_1, lower_z_2, lower_z_3, lower_z_4};
 
     case_translator.emplace(make_pair(false, false), make_pair(1, 0));
     case_translator.emplace(make_pair(false, true),  make_pair(3, 1));
