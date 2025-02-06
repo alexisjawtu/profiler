@@ -15,22 +15,7 @@ class SetParameter
     public:
 
     string output_folder;
-    int type;                      
-    double scale;                  
-    double angle_between_cuts = 0; 
-    double user_diameter_for_wafer;
-    double L1 = 0;
-    double L2 = 0;
     double user_thickness_of_inner_wafer;  // WAS t
-    double r_c;
-    double x_c = 0;
-    double y_c = 0;
-    double theta;
-    double theta_p;  // theta_p stands for theta_probe
-    double h;
-    double dEA;
-    double dEB;
-    double dEC;
 
     map<string, valarray<double>> profile_parameters;
 
