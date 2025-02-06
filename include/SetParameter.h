@@ -15,12 +15,6 @@ class SetParameter
     public:
 
     string output_folder;
-    int type;                      
-    double scale; 
-    double angle_between_cuts = 0; 
-    double user_diameter_for_wafer;
-    double L1 = 0;
-    double L2 = 0;
     double user_thickness_of_inner_wafer;  // WAS t
     double r_c;
     double x_c = 0;
