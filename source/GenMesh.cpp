@@ -16,7 +16,6 @@ GenMesh::GenMesh(
 
 {
 
-    // TODO: remove these three, as we can call the map<> profile_params directly
     delta_over_plane_xy = profile_params["Width"];  // {delta_xy_0, delta_xy_1, delta_xy_2, delta_xy_3, delta_xy_4};
     upper_z             = profile_params["Ceiling"];  // {upper_z_0, upper_z_1, upper_z_2, upper_z_3, upper_z_4};
     lower_z             = profile_params["Floor"];  // {lower_z_0, lower_z_1, lower_z_2, lower_z_3, lower_z_4};
@@ -39,7 +38,6 @@ GenMesh::~GenMesh() {}
 
 Point GenMesh::get_right_orthogonal(Point vector2D)
 {
-    // TODO: test once more
     return Point(vector2D.m_y, -vector2D.m_x)/vector2D.norm();
 }
 
@@ -348,11 +346,11 @@ void GenMesh::add_tetrahedra_within_prisms() {
 
 void GenMesh::reset_profile_objects() {
 
-    // erase
+    // Erase containers
     radial_sorted_upper_bdr_indices = vector<int>(); 
     radial_sorted_lower_bdr_indices = vector<int>();
 
-    // redefine
+    // Redefine
     indices_for_outer_facets = map<int, vector<int>>(new_indices_for_outer_facets);
 
     for (int b = 0; b < number_of_bricks_in_wall; b++) {
@@ -362,11 +360,12 @@ void GenMesh::reset_profile_objects() {
         radial_sorted_lower_bdr_indices.push_back(prisms_map[b].front_dn);
         radial_sorted_lower_bdr_indices.push_back(prisms_map[b].radial_dn);
     }
+
     // Repeat first indices to have the last cuadrilateral.
     radial_sorted_upper_bdr_indices.push_back(radial_sorted_upper_bdr_indices[0]);
     radial_sorted_lower_bdr_indices.push_back(radial_sorted_lower_bdr_indices[0]);
 
-    // erase
+    // Erase containers
     new_indices_for_outer_facets    = map<int, vector<int>>();
     prisms_map                      = map<int, Prism>();
     sorted_boundary_points          = the_map();
@@ -424,8 +423,6 @@ void GenMesh::build_profile_mesh(int input_size) {
     Prism current_prism;
 
     // Wall of 3D points for base case.
-    // TODO: perhaps we can omit the construction of wall_of_Point3D
-    // and do the base case physical_facets directly.
     for (int l = number_of_layers - 1; l >= 0; l--) {
         local_z = l * height_of_layer;
         for (auto& p: sorted_boundary_points) {
@@ -478,7 +475,7 @@ void GenMesh::build_profile_mesh(int input_size) {
 
             prisms_map.emplace(b, current_prism);
 
-            // mesh the first array of prisms
+            // Mesh the first array of prisms
             if (this_diagonal) {
                 split_prism(2, {back_idxs[0], back_idxs[3], current_prism.front_up},
                                {back_idxs[1], back_idxs[2], current_prism.front_dn});
@@ -499,12 +496,7 @@ void GenMesh::build_profile_mesh(int input_size) {
 
 }
 
-// TODO: to study the condition of the matrix: 
-// double max()
-// double min()
-// report the max of the whole mesh
-// report the min for the whole ...
-
+// Three dimensional measure, to study condition of matrices
 double GenMesh::measure(vector<int>& tetra) {
     Point3D i_versor = all_wafer_Point3D[tetra[1]] - all_wafer_Point3D[tetra[0]];
     Point3D j_versor = all_wafer_Point3D[tetra[2]] - all_wafer_Point3D[tetra[0]];

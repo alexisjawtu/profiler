@@ -99,23 +99,3 @@ void SetParameter::get_from_args(int argc, char* argv[]) {
     };
 
 }
-
-
-void SetParameter::check_output_folder(string folder) {
-    
-    if (false) {
-
-        // TODO check existence of the folder, to avoid overwriting
-        // if (stat(prefix.c_str(), &statDirectory) == -1) {
-        //     cerr << "Input directory does not exists!\n" ;
-        //     exit(1);
-        // };
-
-    } else {
-
-        output_folder = folder;
-        mkdir(output_folder.data(), 0777);
-
-    }
-
-}

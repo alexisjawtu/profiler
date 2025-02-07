@@ -40,33 +40,15 @@ int main(int argc, char *argv[])
           "to be the 2D points as stored in "
           "vector<size_t> GenMesh::bdr_pointlist.");
 
-    // begin{ all this -> SetParameter
     string prefix(".");
     bool debug_flag {false};
-    // number of horizontal mesh layers
-    int tetrahedral_layers {1};
-    /**
-     * TODO the task here is to eliminate the absurd definition of
-     * layers as being 2 (2D layers) when there is only one 3D layer
-     *
-     * Eliminate variable layer and
-     * keep only variable tetrahedral_layers.
-    **/ 
-    int layer = tetrahedral_layers + 1;
+    // number of horizontal 2D layers
+    int layer {2};
 
     SetParameter parameters = SetParameter(argc, argv);
     double thickness_of_inner_wafer = parameters.user_thickness_of_inner_wafer;
-    double dt = thickness_of_inner_wafer/tetrahedral_layers;
-    // end{ all this -> SetParameter
+    double dt = thickness_of_inner_wafer/(layer - 1);
 
-    // TODO genmesh has to be allocated regularly, not in dynamic memory
-    /** 
-     * TODO if we keep this design of class GenMesh,
-     * then the constructor simply takes a SetParameter, as in
-     *  
-     *             GenMesh gm = GenMesh(parameters);
-     *             bla bla bla
-    **/ 
     GenMesh* genmesh = new GenMesh(
                         layer,
                         parameters.user_thickness_of_inner_wafer,
