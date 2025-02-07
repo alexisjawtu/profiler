@@ -26,7 +26,7 @@ struct Prism {
 
 typedef tuple<vector<int>, vector<int>, int> Brick;
 
-// TODO: usar esto para measure()
+// We may use this to measure elements and work the matrix condition
 typedef tuple<Point3D, Point3D, Point3D, Point3D> Tetrahedron;
 
 
@@ -39,12 +39,10 @@ class GenMesh
     string output_dir;
 
     int number_of_layers;
-    // TODO: rename the following two as "base case" "general case"
     int number_of_outer_walls = 0;
     int number_of_bricks_in_wall = 0;
     double height_of_layer;
 
-    // TODO: estos 3 pueden sacarse y usar directo el map
     valarray<double> upper_z; 
     valarray<double> lower_z;
     valarray<double> delta_over_plane_xy;
