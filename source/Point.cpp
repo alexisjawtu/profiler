@@ -59,6 +59,6 @@ ostream& operator<<(ostream& o, const Point& p) {
     return o;
 }
 
-double Point::norm(){
+double Point::norm() {
     return sqrt(m_x * m_x + m_y * m_y);
 }

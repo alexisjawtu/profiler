@@ -37,12 +37,6 @@ GenMesh::GenMesh(
 GenMesh::~GenMesh() {}
 
 
-void find_global_coordinates_for_boundary()
-{
-    
-}
-
-
 Point GenMesh::get_right_orthogonal(Point vector2D)
 {
     // TODO: test once more
