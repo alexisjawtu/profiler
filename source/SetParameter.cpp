@@ -37,7 +37,6 @@ void SetParameter::get_from_ui() {
     cout << "Input the Thickness of the wafer (unit: microns) ";
     cin >> user_thickness_of_inner_wafer;
     cout << endl << endl;
-    user_thickness_of_inner_wafer *= 0.1 * 0.001;
 
     cout << "Now, please input the parameters for the profile mesh.\n"
             "Please refer to pictures and examples in the documentation." << endl << endl;
