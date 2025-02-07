@@ -143,14 +143,13 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < index; ++i)
     {
-        genmesh->profile_diagonals.push_back(diagonals_data.get() == '1');
+        genmesh -> profile_diagonals.push_back(diagonals_data.get() == '1');
     }
 
-    genmesh->find_global_coordinates_for_boundary();
-    genmesh->make_3D_points();
-    genmesh->build_profile_mesh(index);
-    genmesh->stream_elements_out();
-    genmesh->stream_nodes_out();
+    genmesh -> make_3D_points();
+    genmesh -> build_profile_mesh(index);
+    genmesh -> stream_elements_out();
+    genmesh -> stream_nodes_out();
     
     return 0;
 }
