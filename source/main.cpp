@@ -138,16 +138,18 @@ int main(int argc, char *argv[])
     delete[] raw_tetrahedron;
     elements_data.close();
 
-    while ()
+    while (false)
     {
-        CONTINUE HERE: falta todo el parrafo para tomar los nodes en R3.
-            
-            * buscar los indices del borde y borrarlo
-            * ATENCION pensar en como usar un VALARRAY para la busqueda
-                       de un double.
-            * TAREA importante: pasar a funciones en GenMesh.cpp todo lo
-                                de este archivo.
-            * cambiar todos los print o cout por la template print<T>
+        /**
+         *  TODOs CONTINUE HERE: all this cycle body to receive the 3D nodes missing.
+         *
+         *  Look for the indices in the boundary and erase it
+         *  
+         *  TASK Research how to use <valarray> to traverse and search a double
+         *  TASK important transform the code in this 'main' into methods of GenMesh.
+                 leave a minimal 'int main () {}'
+         *  TASK replace the prints and couts with template print<T>
+        **/
     }
 
     genmesh->find_global_coordinates_for_boundary();
