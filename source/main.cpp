@@ -91,6 +91,8 @@ int main(int argc, char *argv[])
     int index {0};                              // Stores the index of a 2D point.
     vector<int> element;                        // Stores a tetrahedron.
 
+    // TODO de-hardcode this 100
+    // int length_of_one_line_in_the_input = 100;  // Three floats of 22 characters long. No more.
     char* raw_point = new char[100];              
     boundary_data.getline(raw_point, 100);
     string point (raw_point);
