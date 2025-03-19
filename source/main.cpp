@@ -51,7 +51,16 @@ int main(int argc, char *argv[])
     }
 
     bool debug_flag {false};
-    int layer {2};
+    // number of horizontal mesh layers
+    int tetrahedral_layers {1};
+    /**
+     * TODO the task here is to eliminate the absurd definition of
+     * layers as being 2 (2D layers) when there is only one 3D layer
+     *
+     * Eliminate variable layer and
+     * keep only variable tetrahedral_layers.
+    **/ 
+    int layer = tetrahedral_layers + 1;
 
     SetParameter parameters = SetParameter(argc, argv);
     
