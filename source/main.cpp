@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
+    // begin{ all this -> SetParameter
     bool debug_flag {false};
     // number of horizontal mesh layers
     int tetrahedral_layers {1};
@@ -61,7 +62,8 @@ int main(int argc, char *argv[])
      * keep only variable tetrahedral_layers.
     **/ 
     int layer = tetrahedral_layers + 1;
-
+    // end{ all this -> SetParameter
+    
     SetParameter parameters = SetParameter(argc, argv);
     
     GenMesh* genmesh = new GenMesh(
