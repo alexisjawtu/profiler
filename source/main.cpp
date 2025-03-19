@@ -65,7 +65,16 @@ int main(int argc, char *argv[])
     // end{ all this -> SetParameter
     
     SetParameter parameters = SetParameter(argc, argv);
-    
+
+    /** TODO 
+     * 1- genmesh has to be allocated regularly, not in dynamic memory
+     * 2- if we keep this design of class GenMesh,
+     *    then the constructor simply takes a SetParameter, as in
+     *  
+     *             GenMesh gm = GenMesh(parameters);
+     *             bla bla bla
+    **/ 
+
     GenMesh* genmesh = new GenMesh(
                         layer,
                         parameters.user_thickness_of_inner_wafer,
