@@ -505,7 +505,7 @@ void GenMesh::build_profile_mesh(int input_size) {
 
 }
 
-// TODO: to study the condition of the matrix: 
+// Three dimensional measure, to study condition of matrices 
 // double max()
 // double min()
 // report the max of the whole mesh
