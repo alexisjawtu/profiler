@@ -38,6 +38,7 @@ GenMesh::~GenMesh() {}
 
 Point GenMesh::get_right_orthogonal(Point vector2D)
 {
+    // TODO: test once more
     return Point(vector2D.m_y, -vector2D.m_x)/vector2D.norm();
 }
 
@@ -423,6 +424,8 @@ void GenMesh::build_profile_mesh(int input_size) {
     Prism current_prism;
 
     // Wall of 3D points for base case.
+    // TODO: perhaps we can omit the construction of wall_of_Point3D
+    // and do the base case physical_facets directly.
     for (int l = number_of_layers - 1; l >= 0; l--) {
         local_z = l * height_of_layer;
         for (auto& p: sorted_boundary_points) {
