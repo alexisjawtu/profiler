@@ -30,8 +30,8 @@ typedef tuple<vector<int>, vector<int>, int> Brick;
 typedef tuple<Point3D, Point3D, Point3D, Point3D> Tetrahedron;
 
 
-class GenMesh 
-{
+class Profile {
+
     private:
 
     bool debug;
@@ -76,7 +76,7 @@ class GenMesh
 
     public:
     
-    GenMesh(
+    Profile(
         int n_layers,
         double h_layer,
         bool debug_flag,
@@ -97,7 +97,7 @@ class GenMesh
     map<int, list<int>> vertices_by_elements;
     map<int, vector<int>> elements_by_vertices;
 
-    ~GenMesh();
+    ~Profile();
 
     Point project2D(Point3D p);
 
