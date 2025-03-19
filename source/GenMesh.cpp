@@ -354,11 +354,11 @@ void GenMesh::add_tetrahedra_within_prisms() {
 
 void GenMesh::reset_profile_objects() {
 
-    // erase
+    // Erase containers
     radial_sorted_upper_bdr_indices = vector<int>(); 
     radial_sorted_lower_bdr_indices = vector<int>();
 
-    // redefine
+    // Redefine
     indices_for_outer_facets = map<int, vector<int>>(new_indices_for_outer_facets);
 
     for (int b = 0; b < number_of_bricks_in_wall; b++) {
@@ -368,11 +368,12 @@ void GenMesh::reset_profile_objects() {
         radial_sorted_lower_bdr_indices.push_back(prisms_map[b].front_dn);
         radial_sorted_lower_bdr_indices.push_back(prisms_map[b].radial_dn);
     }
+
     // Repeat first indices to have the last cuadrilateral.
     radial_sorted_upper_bdr_indices.push_back(radial_sorted_upper_bdr_indices[0]);
     radial_sorted_lower_bdr_indices.push_back(radial_sorted_lower_bdr_indices[0]);
 
-    // erase
+    // Erase containers
     new_indices_for_outer_facets    = map<int, vector<int>>();
     prisms_map                      = map<int, Prism>();
     sorted_boundary_points          = the_map();
@@ -484,7 +485,7 @@ void GenMesh::build_profile_mesh(int input_size) {
 
             prisms_map.emplace(b, current_prism);
 
-            // mesh the first array of prisms
+            // Mesh the first array of prisms
             if (this_diagonal) {
                 split_prism(2, {back_idxs[0], back_idxs[3], current_prism.front_up},
                                {back_idxs[1], back_idxs[2], current_prism.front_dn});
@@ -505,7 +506,7 @@ void GenMesh::build_profile_mesh(int input_size) {
 
 }
 
-// Three dimensional measure, to study condition of matrices 
+// Three dimensional measure, to study condition of matrices
 // double max()
 // double min()
 // report the max of the whole mesh
