@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 
-#include "GenMesh.h"
+#include "Profile.h"
 #include "SetParameter.h"
 
 

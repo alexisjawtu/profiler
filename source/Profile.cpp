@@ -1,7 +1,7 @@
-#include "GenMesh.h"
+#include "Profile.h"
 
 
-GenMesh::GenMesh(
+Profile::Profile(
     int n_layers,
     double h_layer,
     bool debug_flag,
@@ -34,7 +34,7 @@ GenMesh::GenMesh(
 }
 
 
-GenMesh::~GenMesh() {}
+Profile::~Profile() {}
 
 
 void find_global_coordinates_for_boundary()
@@ -43,14 +43,14 @@ void find_global_coordinates_for_boundary()
 }
 
 
-Point GenMesh::get_right_orthogonal(Point vector2D)
+Point Profile::get_right_orthogonal(Point vector2D)
 {
     // TODO: test once more
     return Point(vector2D.m_y, -vector2D.m_x)/vector2D.norm();
 }
 
 
-void GenMesh::stream_elements_out() {
+void Profile::stream_elements_out() {
     ofstream outfile;
     vector<int> current;
     outfile.open(output_dir + "/profile_elements.dat", ios::trunc);
@@ -64,12 +64,12 @@ void GenMesh::stream_elements_out() {
 }
 
 
-Point GenMesh::project2D(Point3D p) {
+Point Profile::project2D(Point3D p) {
     return Point(p.x, p.y);
 }
 
 
-void GenMesh::radial_sort_boundary_points() {
+void Profile::radial_sort_boundary_points() {
     vector<Point> original_points(bdr_pointlist);
 
     int minimal_index;
@@ -103,7 +103,7 @@ void GenMesh::radial_sort_boundary_points() {
     if (!radial_sorted_upper_bdr_indices.size())
     {
         cout << "Trouble with filling radial_sorted_upper_bdr_indices.\n"
-                "In function void GenMesh::radial_sort_boundary_points." << endl;
+                "In function void Profile::radial_sort_boundary_points." << endl;
         exit(1);
     }
     radial_sorted_upper_bdr_indices.push_back(radial_sorted_upper_bdr_indices[0]);
@@ -112,7 +112,7 @@ void GenMesh::radial_sort_boundary_points() {
 }
 
 
-void GenMesh::orient_profile_diagonals() {
+void Profile::orient_profile_diagonals() {
     /*
     
     Cases of diagonals. 
@@ -151,7 +151,7 @@ void GenMesh::orient_profile_diagonals() {
 }
 
 
-void GenMesh::stream_diagonals_out() {
+void Profile::stream_diagonals_out() {
     for (int j = 0; j < profile_diagonals.size(); j++)
         cout << j << ", "
              << radial_sorted_upper_bdr_indices[j] << ", " 
@@ -160,7 +160,7 @@ void GenMesh::stream_diagonals_out() {
 }
 
 
-void GenMesh::stream_nodes_out() {
+void Profile::stream_nodes_out() {
     ofstream nodes_file;
     nodes_file.open(output_dir + "/profile_nodes.dat", ios::trunc);
     for (auto& p: all_wafer_Point3D) {
@@ -170,7 +170,7 @@ void GenMesh::stream_nodes_out() {
 }
 
 
-void GenMesh::stream_boundary_nodes_out() {
+void Profile::stream_boundary_nodes_out() {
 
     ofstream sorted_boundary_nodes_file;
     sorted_boundary_nodes_file.open(output_dir + "/sorted_boundary_nodes_on_space.csv", ios::trunc);
@@ -186,7 +186,7 @@ void GenMesh::stream_boundary_nodes_out() {
 }
 
 
-void GenMesh::construct_front_nodes_of_brick(vector<Point3D>& back_wall, int iteration) {
+void Profile::construct_front_nodes_of_brick(vector<Point3D>& back_wall, int iteration) {
 
     /* back_wall represents a 4 x 3 matrix containing the coordinates
        the appended vector is a 4 x 3 matrix with the front coordinates
@@ -215,7 +215,7 @@ void GenMesh::construct_front_nodes_of_brick(vector<Point3D>& back_wall, int ite
 }
 
 
-void GenMesh::split_prism(int prisma_kind, vector<int> up, vector<int> dn) {
+void Profile::split_prism(int prisma_kind, vector<int> up, vector<int> dn) {
     /*
     
     This function decides the indices permutations to be added as new tetrahedra.
@@ -305,7 +305,7 @@ void GenMesh::split_prism(int prisma_kind, vector<int> up, vector<int> dn) {
 }
 
 
-void GenMesh::add_tetrahedra_within_prisms() {
+void Profile::add_tetrahedra_within_prisms() {
 
     pair<bool, bool> current_inner_diagonals;
     pair<int, int> current_case;  // (left, right)
@@ -352,7 +352,7 @@ void GenMesh::add_tetrahedra_within_prisms() {
 }
 
 
-void GenMesh::reset_profile_objects() {
+void Profile::reset_profile_objects() {
 
     // Erase containers
     radial_sorted_upper_bdr_indices = vector<int>(); 
@@ -397,7 +397,7 @@ void GenMesh::reset_profile_objects() {
 }
 
 
-void GenMesh::make_3D_points() {
+void Profile::make_3D_points() {
     double local_z;
 
     for (int l = number_of_layers - 1; l >= 0; l--) {
@@ -409,7 +409,7 @@ void GenMesh::make_3D_points() {
 }
 
 
-void GenMesh::build_profile_mesh(int input_size) {
+void Profile::build_profile_mesh(int input_size) {
 
     for (int i = 0; i < input_size; i++)
     {
@@ -512,7 +512,7 @@ void GenMesh::build_profile_mesh(int input_size) {
 // report the max of the whole mesh
 // report the min for the whole ...
 
-double GenMesh::measure(vector<int>& tetra) {
+double Profile::measure(vector<int>& tetra) {
     Point3D i_versor = all_wafer_Point3D[tetra[1]] - all_wafer_Point3D[tetra[0]];
     Point3D j_versor = all_wafer_Point3D[tetra[2]] - all_wafer_Point3D[tetra[0]];
     Point3D k_versor = all_wafer_Point3D[tetra[3]] - all_wafer_Point3D[tetra[0]];
