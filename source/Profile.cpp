@@ -453,7 +453,7 @@ void Profile::build_profile_mesh(int input_size) {
     // Iterate "control point levels"
     for (int c = 0; c < 5; c++) {
 
-        if (debug) {
+	if (debug) {
             cout << "CONTROL POINTS ITERATION NUMBER " << c + 1 << "\n";
             cout << "Current all_wafer_Point3D size " << added_index << endl;
             cout << "Current element number " << elements_by_vertices.size() << endl;
@@ -464,11 +464,16 @@ void Profile::build_profile_mesh(int input_size) {
                  << radial_sorted_upper_bdr_indices.size() << ", "
                  << radial_sorted_lower_bdr_indices.size() << ") " << endl;
         }
-
+        
+	assert(physical_facets.size());
+	assert(profile_diagonals.size());
         for (int b = 0; b < number_of_bricks_in_wall; b++) {
             // Append actual R3 points to nodes.csv
             construct_front_nodes_of_brick(physical_facets[b], c);
             this_diagonal = profile_diagonals[b];
+    	    print<string>("Checkpoint");
+	    
+
             back_idxs = {radial_sorted_upper_bdr_indices[b],
                          radial_sorted_lower_bdr_indices[b],
                          radial_sorted_lower_bdr_indices[b + 1],

@@ -11,8 +11,7 @@ struct stat statDirectory;
 
 SetParameter::SetParameter(int argc, char* argv[]) {
 
-    output_folder     = string(".");
-    argv_num_of_input = 17;
+    output_folder = string(".");
 
     if (argc == 1)
         get_from_ui();
@@ -42,7 +41,6 @@ void SetParameter::get_from_ui() {
     cout << "Now, please input the parameters for the profile mesh.\n"
             "Please refer to pictures and examples in the documentation.\n\n";
 
-    array<const char*, 3> parameter_names ({"Ceiling", "Floor", "Width"});
 
     profile_parameters["Ceiling"] = valarray<double> (5);
     profile_parameters["Floor"]   = valarray<double> (5);
@@ -62,20 +60,24 @@ void SetParameter::get_from_ui() {
 
 
 void SetParameter::get_from_args(int argc, char* argv[]) {
-
+    // TODO: how do I pass argv by reference here?
+    
     cout << "argc " << argc << endl;
 
-    // Error in number of args
-    if (argc != argv_num_of_input) {
+    argv_num_of_input = parameter_names.size()
+	    		* profile_layers_number
+			+ extra_names.size();
+
+    if (argc - 1 != argv_num_of_input) {
         cerr << "ERROR: Wrong number of arguments. There should be " << argv_num_of_input
              << " arguments for the profile." << endl;
         exit(1);
     }
-    
+ 
     user_thickness_of_inner_wafer = atof(argv[1]);
 
     profile_parameters["Ceiling"] = valarray<double> {
-        atof(argv[2]), 
+        atof(argv[2]),
         atof(argv[5]),
         atof(argv[8]),
         atof(argv[11]),
@@ -102,7 +104,7 @@ void SetParameter::get_from_args(int argc, char* argv[]) {
 
 
 void SetParameter::check_output_folder(string folder) {
-    
+
     if (false) {
 
         // TODO check existence of the folder, to avoid overwriting

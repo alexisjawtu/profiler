@@ -17,32 +17,22 @@ using namespace std;
 */
 
 
-template <class T> void print(T data)
-{
-    cout << T << "\n";
-}
+int main(int argc, char *argv[]) {
+    string file_bdr_vertices {"bdr_nodes.dat"};
+    string file_elements {"elements.dat"};
+    string file_vertices {"nodes.dat"};
+    string input_folder {argv[argc-1]};
 
-
-template <class T> void print_vector(T& v)
-{
-    for (auto& d: v)
-    {
-        cout << boolalpha << d << ", ";
-    }
-    cout << "\n";
-}
-
-
-int main(int argc, char *argv[])
-{
+    /*
     print("\nProfiler v1.2.0 August 2023." 
           "\vReminder: The boundary points in the input are assumed\n"
           "to be the 2D points as stored in "
-          "vector<size_t> GenMesh::bdr_pointlist.");
+          "vector<size_t> Profile::bdr_pointlist.");
+    */
 
-    ifstream boundary_data ("bdr_nodes.dat");
-    ifstream elements_data ("elements.dat");
-    ifstream nodes_data    ("nodes.dat");
+    ifstream boundary_data (input_folder + "/result/" + file_bdr_vertices);
+    ifstream elements_data (input_folder + "/result/" + file_elements);
+    ifstream nodes_data    (input_folder + "/result/" + file_vertices);
 
     if (!boundary_data || !nodes_data || !elements_data)
     {
@@ -67,15 +57,15 @@ int main(int argc, char *argv[])
     SetParameter parameters = SetParameter(argc, argv);
 
     /** TODO 
-     * 1- genmesh has to be allocated regularly, not in dynamic memory
-     * 2- if we keep this design of class GenMesh,
+     * 1- profile has to be allocated regularly, not in dynamic memory
+     * 2- if we keep this design of class Profile,
      *    then the constructor simply takes a SetParameter, as in
      *  
-     *             GenMesh gm = GenMesh(parameters);
+     *             Profile gm = Profile(parameters);
      *             bla bla bla
     **/ 
 
-    GenMesh* genmesh = new GenMesh(
+    Profile* profile = new Profile(
                         layer,
                         parameters.user_thickness_of_inner_wafer,
                         debug_flag,
@@ -107,8 +97,8 @@ int main(int argc, char *argv[])
         stringstream(point.substr(0, comma)) >> coordy;
         point  = point.substr(comma + 1);
 
-        genmesh->bdr_pointlist.push_back(Point(coordx, coordy));
-        genmesh->pointlist.push_back(Point(coordx, coordy));
+        profile -> bdr_pointlist.push_back(Point(coordx, coordy));
+        profile -> pointlist.push_back(Point(coordx, coordy));
 
         boundary_data.getline(raw_point, 100);
         point = string(raw_point);
@@ -121,7 +111,7 @@ int main(int argc, char *argv[])
 
     comma = 0;
     elements_data.seekg(0, elements_data.end);  // set position at the end
-    int length {elements_data.tellg()};         // tell which position is the end
+    long int length {elements_data.tellg()};         // tell which position is the end
     elements_data.seekg(0, elements_data.beg);  // set position back to beginning
 
     char* raw_tetrahedron = new char[length];              
@@ -150,7 +140,7 @@ int main(int argc, char *argv[])
         stringstream(tetrahedron.substr(0, comma)) >> current_node;
         element.push_back(current_node);
 
-        genmesh->elements_by_vertices.emplace(row, element);
+        profile -> elements_by_vertices.emplace(row, element);
         elements_data.getline(raw_tetrahedron, length);
         tetrahedron = string(raw_tetrahedron);        
         element     = {};
@@ -168,17 +158,17 @@ int main(int argc, char *argv[])
          *  Look for the indices in the boundary and erase it
          *  
          *  TASK Research how to use <valarray> to traverse and search a double
-         *  TASK important transform the code in this 'main' into methods of GenMesh.
+         *  TASK important transform the code in this 'main' into methods of Profile.
                  leave a minimal 'int main () {}'
          *  TASK replace the prints and couts with template print<T>
         **/
     }
 
-    genmesh->find_global_coordinates_for_boundary();
-    genmesh->make_3D_points();
-    genmesh->build_profile_mesh(index);
-    genmesh->stream_elements_out();
-    genmesh->stream_nodes_out();
+    // profile -> find_global_coordinates_for_boundary();
+    profile -> make_3D_points();
+    profile -> build_profile_mesh(index);
+    profile -> stream_elements_out();
+    profile -> stream_nodes_out();
     
     return 0;
 }
