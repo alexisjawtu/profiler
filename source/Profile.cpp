@@ -9,12 +9,12 @@ Profile::Profile(
     map<string, valarray<double>>& profile_params
 ):
 
-    number_of_layers(n_layers),
-    height_of_layer(h_layer),
-    debug(debug_flag),
-    output_dir(prefix)
-
 {
+    number_of_layers = n_layers;
+    height_of_layer = h_layer;
+    debug = debug_flag;
+    output_dir = prefix;
+
 
     // TODO: remove these three, as we can call the map<> profile_params directly
     delta_over_plane_xy = profile_params["Width"];  // {delta_xy_0, delta_xy_1, delta_xy_2, delta_xy_3, delta_xy_4};
@@ -465,14 +465,13 @@ void Profile::build_profile_mesh(int input_size) {
                  << radial_sorted_lower_bdr_indices.size() << ") " << endl;
         }
         
-	assert(physical_facets.size());
-	assert(profile_diagonals.size());
+        assert(physical_facets.size());
+        assert(profile_diagonals.size());
+
         for (int b = 0; b < number_of_bricks_in_wall; b++) {
             // Append actual R3 points to nodes.csv
             construct_front_nodes_of_brick(physical_facets[b], c);
             this_diagonal = profile_diagonals[b];
-    	    print<string>("Checkpoint");
-	    
 
             back_idxs = {radial_sorted_upper_bdr_indices[b],
                          radial_sorted_lower_bdr_indices[b],
