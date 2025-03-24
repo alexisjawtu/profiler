@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     int comma;                                  // Stores the places of the commas.
     double coordx;
     double coordy;
-    int index = 0;
+    int number_of_bdr_points = 0;               // Exactly the number of vertical walls.
 
     boundary_data.seekg(0, boundary_data.end);  // set position at the end
     int length = boundary_data.tellg();         // tell which position is the end
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
         boundary_data.getline(raw_point, 100);
         point = string(raw_point);
 
-        index ++;
+        number_of_bdr_points ++;
     }
 
     /**
@@ -123,13 +123,13 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    for (int i = 0; i < index; ++i)
+    for (int i = 0; i < number_of_bdr_points; ++i)
     {
         genmesh -> profile_diagonals.push_back(diagonals_data.get() == '1');
     }
 
     genmesh -> make_3D_points();
-    genmesh -> build_profile_mesh(index);
+    genmesh -> build_profile_mesh(number_of_bdr_points);
     genmesh -> stream_elements_out();
     genmesh -> stream_nodes_out();
     
