@@ -57,28 +57,28 @@ int main(int argc, char *argv[]) {
     SetParameter parameters = SetParameter(argc, argv);
 
     /** TODO 
-     * 1- profile has to be allocated regularly, not in dynamic memory
-     * 2- if we keep this design of class Profile,
-     *    then the constructor simply takes a SetParameter, as in
+     * 1- if we keep this design of class Profile,
+     *    then the constructor simply takes an InputCollection, a.k.a. SetParameter,
+     *   as in
      *  
-     *             Profile gm = Profile(parameters);
+     *             Profile profile = Profile(parameters);
      *             bla bla bla
     **/ 
 
-    Profile* profile = new Profile(
+    Profile profile = Profile(
                         layer,
                         parameters.user_thickness_of_inner_wafer,
                         debug_flag,
                         parameters.output_folder,
                         parameters.profile_parameters
-                    );
+                      );
 
     int current_node {0};
     int comma;                                  // Stores the places of the commas.
     double coordx;                              // 2D coordinates of boundary points.
     double coordy;                              
     int row;                                    // Stores the index of a tetrahedron.
-    int index {0};                              // Stores the index of a 2D point.
+    int number_of_bdr_points {0};               // Stores the number_of_bdr_points of a 2D point.
     vector<int> element;                        // Stores a tetrahedron.
 
     // TODO de-hardcode this 100
@@ -97,13 +97,13 @@ int main(int argc, char *argv[]) {
         stringstream(point.substr(0, comma)) >> coordy;
         point  = point.substr(comma + 1);
 
-        profile -> bdr_pointlist.push_back(Point(coordx, coordy));
-        profile -> pointlist.push_back(Point(coordx, coordy));
+        profile.bdr_pointlist.push_back(Point(coordx, coordy));
+        profile.pointlist.push_back(Point(coordx, coordy));
 
         boundary_data.getline(raw_point, 100);
         point = string(raw_point);
 
-        index ++;
+        number_of_bdr_points ++;
     }
 
     delete[] raw_point;
@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
         stringstream(tetrahedron.substr(0, comma)) >> current_node;
         element.push_back(current_node);
 
-        profile -> elements_by_vertices.emplace(row, element);
+        profile.elements_by_vertices.emplace(row, element);
         elements_data.getline(raw_tetrahedron, length);
         tetrahedron = string(raw_tetrahedron);        
         element     = {};
@@ -164,11 +164,11 @@ int main(int argc, char *argv[]) {
         **/
     }
 
-    // profile -> find_global_coordinates_for_boundary();
-    profile -> make_3D_points();
-    profile -> build_profile_mesh(index);
-    profile -> stream_elements_out();
-    profile -> stream_nodes_out();
+    // profile.find_global_coordinates_for_boundary();
+    profile.make_3D_points();
+    profile.build_profile_mesh(number_of_bdr_points);
+    profile.stream_elements_out();
+    profile.stream_nodes_out();
     
     return 0;
 }

@@ -6,9 +6,7 @@ Profile::Profile(
     double h_layer,
     bool debug_flag,
     string prefix,
-    map<string, valarray<double>>& profile_params
-):
-
+    map<string, valarray<double>>& profile_params)
 {
     number_of_layers = n_layers;
     height_of_layer = h_layer;
@@ -410,10 +408,23 @@ void Profile::make_3D_points() {
 
 
 void Profile::build_profile_mesh(int input_size) {
+    /**
+     * this input_size is the number_of_bdr_points as
+     * taken in 2D
+     */
 
     for (int i = 0; i < input_size; i++)
     {
         upper_bdr_points_global_indices.push_back(i);
+        
+        /**
+         * TODO
+         * all the outer diagonals as 'false' is like
+         * a normal state to start the program, but then
+         * we will have to calculate the actual diagonals
+         * with the vertices_by_elements container.
+         */
+        profile_diagonals.push_back(false); 
     }
 
     int added_index = all_wafer_Point3D.size();
