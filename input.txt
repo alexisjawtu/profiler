@@ -1,0 +1,17 @@
+cylinder_folder case4
+thickness 3000
+profile_ceil_1 2750
+profile_ceil_2 2500
+profile_ceil_3 2250
+profile_ceil_4 2000
+profile_ceil_5 1750
+profile_floor_1 250
+profile_floor_2 500
+profile_floor_3 750
+profile_floor_4 1000
+profile_floor_5 1250
+profile_width_1 916.67
+profile_width_2 750
+profile_width_3 583.33
+profile_width_4 416.67
+profile_width_5 250

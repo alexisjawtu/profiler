@@ -1,6 +1,3 @@
-#include <string>
-#include <iostream>
-
 #include "Profile.h"
 #include "SetParameter.h"
 

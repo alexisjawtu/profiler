@@ -13,10 +13,20 @@ SetParameter::SetParameter(int argc, char* argv[]) {
 
     output_folder = string(".");
 
-    if (argc == 1)
-        get_from_ui();
-    else
-        get_from_args(argc, argv);
+    switch (argc)
+    {
+        case 1:
+            get_from_ui();
+            break;
+
+        case 2:
+            get_from_file(argv[1]);
+            break;
+
+        default:
+            get_from_args(argc, argv);
+            break;
+    }
 
     user_thickness_of_inner_wafer *= .0001;
     profile_parameters["Ceiling"] *= .0001;
@@ -59,11 +69,15 @@ void SetParameter::get_from_ui() {
 }
 
 
+void SetParameter::get_from_file(string file) {
+    input = Input(file);
+    // CONTINUE HERE *** ahora lleno las cosas de SetParameter a partir de input ***
+}
+
+
 void SetParameter::get_from_args(int argc, char* argv[]) {
     // TODO: how do I pass argv by reference here?
     
-    cout << "argc " << argc << endl;
-
     argv_num_of_input = parameter_names.size()
 	    		* profile_layers_number
 			+ extra_names.size();
