@@ -5,8 +5,10 @@
 #include <valarray>
 #include <map>
 #include <sstream>
+#include <sys/stat.h>
 
 #include "Input.h"
+#include "_tools_.h"
 
 
 using namespace std;
@@ -15,6 +17,7 @@ using namespace std;
 class SetParameter {
     public:
 
+        string cylinder_folder;
         string output_folder;
         double user_thickness_of_inner_wafer;  // WAS t
 
@@ -33,7 +36,7 @@ class SetParameter {
         array<const char*, 3> parameter_names{"Ceiling", "Floor", "Width"};
 
         void get_from_ui();
-        void get_from_file(string file);
+        void get_from_file(char* file);
         void get_from_args(int argc, char* argv[]);
         void check_output_folder(string folder);
 };

@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
     string file_bdr_vertices {"bdr_nodes.dat"};
     string file_elements {"elements.dat"};
     string file_vertices {"nodes.dat"};
-    string input_folder {argv[argc-1]};
 
     /*
     print("\nProfiler v1.2.0 August 2023." 
@@ -27,15 +26,6 @@ int main(int argc, char *argv[]) {
           "vector<size_t> Profile::bdr_pointlist.");
     */
 
-    ifstream boundary_data (input_folder + "/result/" + file_bdr_vertices);
-    ifstream elements_data (input_folder + "/result/" + file_elements);
-    ifstream nodes_data    (input_folder + "/result/" + file_vertices);
-
-    if (!boundary_data || !nodes_data || !elements_data)
-    {
-        print("\vSomething is wrong with the input files.\n");
-        exit(1);
-    }
 
     // begin{ all this -> SetParameter
     bool debug_flag {false};
@@ -53,6 +43,16 @@ int main(int argc, char *argv[]) {
     
     SetParameter parameters = SetParameter(argc, argv);
 
+    string input_folder {parameters.cylinder_folder};
+    ifstream boundary_data (input_folder + "/result/" + file_bdr_vertices);
+    ifstream elements_data (input_folder + "/result/" + file_elements);
+    ifstream nodes_data    (input_folder + "/result/" + file_vertices);
+
+    if (!boundary_data || !nodes_data || !elements_data)
+    {
+        print("\vSomething is wrong with the input files.\n");
+        exit(1);
+    }
     /** TODO 
      * 1- if we keep this design of class Profile,
      *    then the constructor simply takes an InputCollection, a.k.a. SetParameter,
@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
     while (false)
     {
         /**
-         *  TODOs CONTINUE HERE: all this cycle body to receive the 3D nodes missing.
+         *  TODOs: all this cycle body to receive the 3D nodes missing.
          *
          *  Look for the indices in the boundary and erase it
          *  
