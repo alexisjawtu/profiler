@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     print("\nProfiler v1.2.0 August 2023." 
           "\vReminder: The boundary points in the input are assumed\n"
           "to be the 2D points as stored in "
-          "vector<size_t> Profile::bdr_pointlist.");
+          "vector<size_t> Cylinder::bdr_pointlist.");
     */
 
 
@@ -163,9 +163,11 @@ int main(int argc, char *argv[]) {
 
     // profile.find_global_coordinates_for_boundary();
     profile.make_3D_points();
+    profile.aux_stream_nodes_out();
     profile.build_profile_mesh(number_of_bdr_points);
     profile.stream_elements_out();
     profile.stream_nodes_out();
+    profile.stream_boundary_nodes_out();
     
     return 0;
 }

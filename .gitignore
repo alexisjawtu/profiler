@@ -5,3 +5,4 @@ case*
 *.dat
 test.cpp
 *.out
+*.o

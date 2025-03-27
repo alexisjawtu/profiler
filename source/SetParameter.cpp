@@ -71,6 +71,8 @@ void SetParameter::get_from_file(char* file) {
     user_thickness_of_inner_wafer = input.thickness;
     cylinder_folder = input.cylinder_folder;
 
+//    CONTINUE HERE: test the run
+
     for (int i = 0; i < input.levels; ++i)
     {
         //                                       TODO look for another professional 
@@ -99,6 +101,8 @@ void SetParameter::get_from_args(int argc, char* argv[]) {
         exit(1);
     }
  
+    cylinder_folder = argv[argc - 1];
+
     user_thickness_of_inner_wafer = atof(argv[1]);
 
     profile_parameters["Ceiling"] = valarray<double> {

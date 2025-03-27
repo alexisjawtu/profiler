@@ -1,3 +1,6 @@
+#ifndef _SETPARAMETER_H
+#define _SETPARAMETER_H
+
 #include <math.h>
 #include <iostream>
 #include <string>
@@ -40,3 +43,5 @@ class SetParameter {
         void get_from_args(int argc, char* argv[]);
         void check_output_folder(string folder);
 };
+
+#endif

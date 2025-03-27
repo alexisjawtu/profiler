@@ -1,6 +1,6 @@
 cylinder_folder case4
 thickness 3000
-levels 3
+levels 1
 profile_ceil_1 2750
 profile_ceil_2 2500
 profile_ceil_3 2250

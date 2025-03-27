@@ -51,6 +51,10 @@ Point Profile::get_right_orthogonal(Point vector2D)
 void Profile::stream_elements_out() {
     ofstream outfile;
     vector<int> current;
+
+LO DE LA const prof_params   ERA POR EL PUNTERO TAL VEZ
+PROBAR DE NUEVO asi y con el namespace de nuevo :D
+
     outfile.open(output_dir + "/profile_elements.dat", ios::trunc);
 
     for (int e = 0; e < elements_by_vertices.size(); e++) {
@@ -155,6 +159,15 @@ void Profile::stream_diagonals_out() {
              << radial_sorted_upper_bdr_indices[j] << ", " 
              << radial_sorted_lower_bdr_indices[j] << ", " 
              << profile_diagonals[j] << endl;
+}
+
+
+void Profile::aux_stream_nodes_out() {
+    ofstream nodes_file(output_dir + "/3D_bdr_profile_nodes.dat", ios::trunc);
+    for (auto& p: all_wafer_Point3D) {
+        nodes_file << p.split(',') << endl;
+    }
+    nodes_file.close();
 }
 
 

@@ -1,3 +1,6 @@
+#ifndef _PROFILE_H
+#define _PROFILE_H
+
 #include <string>
 #include <list>
 #include <vector>
@@ -105,6 +108,7 @@ class Profile {
         void stream_diagonals_out();
         void stream_elements_out();
         void stream_nodes_out();
+        void aux_stream_nodes_out();
         void stream_boundary_nodes_out();
         void print_vector(vector<int>& v);
         void print_vector(vector<std::size_t>& v);
@@ -115,3 +119,5 @@ class Profile {
         void build_profile_mesh(int number_of_points_in_the_input);
 
 };
+
+#endif
