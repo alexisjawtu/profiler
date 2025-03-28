@@ -32,9 +32,9 @@ int main(int argc, char *argv[]) {
     SetParameter parameters = SetParameter(argc, argv);
 
     string input_folder {parameters.cylinder_folder};
-    ifstream boundary_data (input_folder + filenames::file_bdr_vertices);
-    ifstream elements_data (input_folder + filenames::file_elements);
-    ifstream nodes_data    (input_folder + filenames::file_vertices);
+    ifstream boundary_data (input_folder + filenames::bdr_vertices_2D);
+    ifstream elements_data (input_folder + filenames::cylinder_elems);
+    ifstream nodes_data    (input_folder + filenames::cylinder_verts);
 
     if (!boundary_data || !nodes_data || !elements_data)
     {
