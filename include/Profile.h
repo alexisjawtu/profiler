@@ -13,7 +13,7 @@
 #include "the_map.h"
 #include "Point.h"
 #include "Point3D.h"
-#include "_tools_.h"
+#include "toolbox.h"
 
 
 using namespace std;
@@ -108,7 +108,6 @@ class Profile {
         void stream_diagonals_out();
         void stream_elements_out();
         void stream_nodes_out();
-        void aux_stream_nodes_out();
         void stream_boundary_nodes_out();
         void print_vector(vector<int>& v);
         void print_vector(vector<std::size_t>& v);

@@ -23,13 +23,16 @@ namespace constants {
     const double radian = 0.017453292519943295;
 }
 
+
 namespace filenames {
+    const char sorted_3D_bdr_vertices[] {"sorted_boundary_vertices_on_space.csv"};
     const char file_bdr_vertices[] {"bdr_nodes.dat"};
+    const char prof_elems[] {"profile_elements.dat"};
+    const char prof_verts[] {"profile_vertices.dat"};
     const char file_elements[] {"elements.dat"};
     const char file_vertices[] {"nodes.dat"};
-    const char prof_elems[] {"/profile_elements.dat"};
-    const char prof_verts[] {"/profile_vertices.dat"};
 }
+
 
 template <class T> void print(T data)
 {

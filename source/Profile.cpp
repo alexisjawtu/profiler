@@ -52,10 +52,7 @@ void Profile::stream_elements_out() {
     ofstream outfile;
     vector<int> current;
 
-LO DE LA const prof_params   ERA POR EL PUNTERO TAL VEZ
-PROBAR DE NUEVO asi y con el namespace de nuevo :D
-
-    outfile.open(output_dir + "/profile_elements.dat", ios::trunc);
+    outfile.open(output_dir + filenames::prof_elems, ios::trunc);
 
     for (int e = 0; e < elements_by_vertices.size(); e++) {
         current = elements_by_vertices[e];
@@ -162,18 +159,9 @@ void Profile::stream_diagonals_out() {
 }
 
 
-void Profile::aux_stream_nodes_out() {
-    ofstream nodes_file(output_dir + "/3D_bdr_profile_nodes.dat", ios::trunc);
-    for (auto& p: all_wafer_Point3D) {
-        nodes_file << p.split(',') << endl;
-    }
-    nodes_file.close();
-}
-
-
 void Profile::stream_nodes_out() {
     ofstream nodes_file;
-    nodes_file.open(output_dir + "/profile_nodes.dat", ios::trunc);
+    nodes_file.open(output_dir + filenames::prof_verts, ios::trunc);
     for (auto& p: all_wafer_Point3D) {
         nodes_file << p.split(',') << endl;
     }
@@ -184,7 +172,7 @@ void Profile::stream_nodes_out() {
 void Profile::stream_boundary_nodes_out() {
 
     ofstream sorted_boundary_nodes_file;
-    sorted_boundary_nodes_file.open(output_dir + "/sorted_boundary_nodes_on_space.csv", ios::trunc);
+    sorted_boundary_nodes_file.open(output_dir + filenames::sorted_3D_bdr_vertices, ios::trunc);
 
     for (int l = number_of_layers - 1; l >= 0; l--) {
 
@@ -409,6 +397,10 @@ void Profile::reset_profile_objects() {
 
 
 void Profile::make_3D_points() {
+    /**
+     * this initializes all_wafer_Point3D filling it first
+     * with the boundary points of the cylinder taken as input.
+    **/
     double local_z;
 
     for (int l = number_of_layers - 1; l >= 0; l--) {
@@ -423,8 +415,9 @@ void Profile::make_3D_points() {
 void Profile::build_profile_mesh(int input_size) {
     /**
      * this input_size is the number_of_bdr_points as
-     * taken in 2D
-     */
+     * taken in 2D (that is, only one circle of points, 
+     * before the construction of the 3D embedded points.
+    **/
 
     for (int i = 0; i < input_size; i++)
     {

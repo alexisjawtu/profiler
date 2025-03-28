@@ -5,19 +5,7 @@
 using namespace std;
 
 
-/** 
-    cppreference.com:
-* 
-    std::size_t is the unsigned integer type of the result of the sizeof operator.
-*   It depends on the architecture.
-
-*/
-
-
 int main(int argc, char *argv[]) {
-    string file_bdr_vertices {"bdr_nodes.dat"};
-    string file_elements {"elements.dat"};
-    string file_vertices {"nodes.dat"};
 
     /*
     print("\nProfiler v1.2.0 August 2023." 
@@ -44,9 +32,9 @@ int main(int argc, char *argv[]) {
     SetParameter parameters = SetParameter(argc, argv);
 
     string input_folder {parameters.cylinder_folder};
-    ifstream boundary_data (input_folder + "/result/" + file_bdr_vertices);
-    ifstream elements_data (input_folder + "/result/" + file_elements);
-    ifstream nodes_data    (input_folder + "/result/" + file_vertices);
+    ifstream boundary_data (input_folder + filenames::file_bdr_vertices);
+    ifstream elements_data (input_folder + filenames::file_elements);
+    ifstream nodes_data    (input_folder + filenames::file_vertices);
 
     if (!boundary_data || !nodes_data || !elements_data)
     {
@@ -163,7 +151,6 @@ int main(int argc, char *argv[]) {
 
     // profile.find_global_coordinates_for_boundary();
     profile.make_3D_points();
-    profile.aux_stream_nodes_out();
     profile.build_profile_mesh(number_of_bdr_points);
     profile.stream_elements_out();
     profile.stream_nodes_out();

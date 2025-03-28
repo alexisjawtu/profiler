@@ -1,4 +1,4 @@
-cylinder_folder case4
+cylinder_folder case4/result/
 thickness 3000
 levels 1
 profile_ceil_1 2750

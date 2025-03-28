@@ -13,7 +13,7 @@ SetParameter::SetParameter(int argc, char* argv[]) {
     profile_parameters["Floor"]   = valarray<double> (5);
     profile_parameters["Width"]   = valarray<double> (5);
 
-    output_folder = string(".");
+    output_folder = string("./");
 
     switch (argc)
     {
@@ -68,10 +68,9 @@ void SetParameter::get_from_ui() {
 
 void SetParameter::get_from_file(char* file) {
     input = Input(file);
+    input.print();
     user_thickness_of_inner_wafer = input.thickness;
     cylinder_folder = input.cylinder_folder;
-
-//    CONTINUE HERE: test the run
 
     for (int i = 0; i < input.levels; ++i)
     {
@@ -81,9 +80,9 @@ void SetParameter::get_from_file(char* file) {
         //                                       TODO unify the maps<> 
         //                                            SetParameter::profile_params with
         //                                            Input::prof_params
-        profile_parameters["Ceiling"][i] = input.prof_params["profile_ceil_" + num_to_str(i)];
-        profile_parameters["Floor"][i] = input.prof_params["profile_floor_" + num_to_str(i)];
-        profile_parameters["Width"][i] = input.prof_params["profile_width_" + num_to_str(i)];
+        profile_parameters["Ceiling"][i] = input.prof_params["profile_ceil_" + num_to_str(i+1)];
+        profile_parameters["Floor"][i] = input.prof_params["profile_floor_" + num_to_str(i+1)];
+        profile_parameters["Width"][i] = input.prof_params["profile_width_" + num_to_str(i+1)];
     }
 }
 
