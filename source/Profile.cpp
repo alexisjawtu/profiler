@@ -87,17 +87,21 @@ void Profile::radial_sort_boundary_points() {
         }
 
         sorted_boundary_points.emplace(j, Point(minimal_point));
-        radial_sorted_upper_bdr_indices.push_back(upper_bdr_points_global_indices[minimal_index]);
+        radial_sorted_upper_bdr_indices.push_back
+            (upper_bdr_points_global_indices[minimal_index]);
 
         original_points.erase(original_points.begin() + minimal_index);
-        upper_bdr_points_global_indices.erase(upper_bdr_points_global_indices.begin() + minimal_index);
+        upper_bdr_points_global_indices.erase
+            (upper_bdr_points_global_indices.begin() + minimal_index);
     }
 
     cuadrilaterals = radial_sorted_upper_bdr_indices.size();
 
     for (int j = 0; j < cuadrilaterals; j++)
-        radial_sorted_lower_bdr_indices.push_back(pointlist.size() + radial_sorted_upper_bdr_indices[j]);
-
+    {
+        radial_sorted_lower_bdr_indices.push_back
+            (pointlist.size() + radial_sorted_upper_bdr_indices[j]);
+    }
     // Repeat first indices to have the last cuadrilateral.
     if (!radial_sorted_upper_bdr_indices.size())
     {
@@ -421,6 +425,9 @@ void Profile::build_profile_mesh(int input_size) {
 
     for (int i = 0; i < input_size; i++)
     {
+        /**
+         * CAUTION here the 'global' indices start with i = 0
+         */
         upper_bdr_points_global_indices.push_back(i);
         
         /**
@@ -435,7 +442,9 @@ void Profile::build_profile_mesh(int input_size) {
 
     int added_index = all_wafer_Point3D.size();
 
-    cout << "Making profile mesh starting with " << added_index << " boundary points." << endl;
+    cout << "Making profile mesh starting with " 
+         << added_index << "( = upper + lower) 3D boundary points."
+         << endl;
 
     radial_sort_boundary_points();
 
@@ -459,6 +468,17 @@ void Profile::build_profile_mesh(int input_size) {
     }
 
     for (int b = 0; b < number_of_bricks_in_wall; b++) {
+        /**
+         * A facet follows the following counterclockwise convention
+         *
+         *                    1 <--------- 4
+         *                    |            ^
+         *                    |            |
+         *                    |            |
+         *                    |            |
+         *                    v            |
+         *                    2 ---------> 3
+         */
         physical_facets[b] = vector<Point3D>({
             wall_of_Point3D[b],
             wall_of_Point3D[b + number_of_bricks_in_wall + 1],

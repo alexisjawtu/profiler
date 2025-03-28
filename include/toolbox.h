@@ -29,8 +29,8 @@ namespace filenames {
     const char file_bdr_vertices[] {"bdr_nodes.dat"};
     const char prof_elems[] {"profile_elements.dat"};
     const char prof_verts[] {"profile_vertices.dat"};
-    const char file_elements[] {"elements.dat"};
-    const char file_vertices[] {"nodes.dat"};
+    const char file_elements[] {"cylinder_elements.dat"};
+    const char file_vertices[] {"cylinder_vertices.dat"};
 }
 
 
