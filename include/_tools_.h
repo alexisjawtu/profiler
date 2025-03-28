@@ -23,14 +23,13 @@ namespace constants {
     const double radian = 0.017453292519943295;
 }
 
-const char prof_elems[] = "/profile_elements.dat";
-
-/*
-
 namespace filenames {
-    const char* prof_elems = "/profile_elements.dat";
+    const char file_bdr_vertices[] {"bdr_nodes.dat"};
+    const char file_elements[] {"elements.dat"};
+    const char file_vertices[] {"nodes.dat"};
+    const char prof_elems[] {"/profile_elements.dat"};
+    const char prof_verts[] {"/profile_vertices.dat"};
 }
-*/
 
 template <class T> void print(T data)
 {
