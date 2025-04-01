@@ -33,10 +33,9 @@ int main(int argc, char *argv[]) {
 
     string input_folder {parameters.cylinder_folder};
     ifstream boundary_data (input_folder + filenames::bdr_vertices_2D);
-    ifstream elements_data (input_folder + filenames::cylinder_elems);
     ifstream nodes_data    (input_folder + filenames::cylinder_verts);
 
-    if (!boundary_data || !nodes_data || !elements_data)
+    if (!boundary_data || !nodes_data)
     {
         print("\vSomething is wrong with the input files.\n");
         exit(1);
@@ -94,47 +93,6 @@ int main(int argc, char *argv[]) {
     delete[] raw_point;
     boundary_data.close();
 
-    comma = 0;
-    elements_data.seekg(0, elements_data.end);  // set position at the end
-    long int length {elements_data.tellg()};         // tell which position is the end
-    elements_data.seekg(0, elements_data.beg);  // set position back to beginning
-
-    char* raw_tetrahedron = new char[length];              
-    elements_data.getline(raw_tetrahedron, length);
-    string tetrahedron(raw_tetrahedron);
-
-    row = 0;
-    while (!elements_data.eof())
-    {
-        comma = tetrahedron.find_first_of(",");
-        stringstream(tetrahedron.substr(0, comma)) >> current_node;
-        element.push_back(current_node);
-        tetrahedron = tetrahedron.substr(comma + 1);
-
-        comma = tetrahedron.find_first_of(",");
-        stringstream(tetrahedron.substr(0, comma)) >> current_node;
-        element.push_back(current_node);
-        tetrahedron = tetrahedron.substr(comma + 1);
-
-        comma = tetrahedron.find_first_of(",");
-        stringstream(tetrahedron.substr(0, comma)) >> current_node;
-        element.push_back(current_node);
-        tetrahedron = tetrahedron.substr(comma + 1);
-
-        comma = tetrahedron.find_first_of(",");
-        stringstream(tetrahedron.substr(0, comma)) >> current_node;
-        element.push_back(current_node);
-
-        profile.elements_by_vertices.emplace(row, element);
-        elements_data.getline(raw_tetrahedron, length);
-        tetrahedron = string(raw_tetrahedron);        
-        element     = {};
-        row        += 1;
-    }
-
-    delete[] raw_tetrahedron;
-    elements_data.close();
-
     while (false)
     {
         /**
@@ -154,7 +112,6 @@ int main(int argc, char *argv[]) {
     profile.build_profile_mesh(number_of_bdr_points);
     profile.stream_elements_out();
     profile.stream_nodes_out();
-    profile.stream_boundary_nodes_out();
     
     return 0;
 }

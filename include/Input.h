@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 
+// TODO #include "toolbox.h"
+
 
 class Input {
     public:
@@ -57,6 +59,14 @@ class Input {
         }
 
         ~Input() {}
+
+        void load_cylinder_verts_by_elems()
+        {
+            // TODO the loading of the cylinder_verts_x_elems is going
+            //      to be replaced by just
+            //      the Cylinder passing the signal of the corresponding
+            //      container  
+        }
 };
 
 #endif

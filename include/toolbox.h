@@ -25,12 +25,14 @@ namespace constants {
 
 
 namespace filenames {
+    const char scalar_parameters[] {"input.txt"};
     const char sorted_3D_bdr_vertices[] {"sorted_boundary_vertices_on_space.csv"};
     const char bdr_vertices_2D[] {"2D_bdr_vertices.dat"};
     const char prof_elems[] {"profile_elements.dat"};
     const char prof_verts[] {"profile_vertices.dat"};
     const char cylinder_elems[] {"cylinder_elements.dat"};
     const char cylinder_verts[] {"cylinder_vertices.dat"};
+    const char cylinder_verts_by_elems[] {"cylinder_verts_by_elems.dat"};
 }
 
 

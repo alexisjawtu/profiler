@@ -50,12 +50,12 @@ Point Profile::get_right_orthogonal(Point vector2D)
 
 void Profile::stream_elements_out() {
     ofstream outfile;
-    vector<int> current;
+    array<int, 4> current;
 
     outfile.open(output_dir + filenames::prof_elems, ios::trunc);
 
-    for (int e = 0; e < elements_by_vertices.size(); e++) {
-        current = elements_by_vertices[e];
+    for (int e = 0; e < profile_elems_by_verts.size(); e++) {
+        current = profile_elems_by_verts[e];
         outfile << current[0] << ", " << current[1] << ", "
                 << current[2] << ", " << current[3] << endl;
     }
@@ -134,15 +134,15 @@ void Profile::orient_profile_diagonals() {
              << cuadrilaterals << endl;
     }
 
-    for (auto& elements_list: vertices_by_elements)
+    for (auto& elements_list: profile_elems_by_verts)
         elements_list.second.sort();
 
     vector<int>::iterator a;
     list<int> first, second;
  
     for (int c = 0; c < cuadrilaterals; c++) {
-        first  = vertices_by_elements[radial_sorted_upper_bdr_indices[c]];
-        second = vertices_by_elements[radial_sorted_lower_bdr_indices[c + 1]];
+        first  = profile_elems_by_verts[radial_sorted_upper_bdr_indices[c]];
+        second = profile_elems_by_verts[radial_sorted_lower_bdr_indices[c + 1]];
 
         vector<int> intersection(max(first.size(), second.size()));
     
@@ -166,7 +166,7 @@ void Profile::stream_diagonals_out() {
 void Profile::stream_nodes_out() {
     ofstream nodes_file;
     nodes_file.open(output_dir + filenames::prof_verts, ios::trunc);
-    for (auto& p: all_wafer_Point3D) {
+    for (auto& p: all_profile_Point3D) {
         nodes_file << p.split(',') << endl;
     }
     nodes_file.close();
@@ -213,7 +213,7 @@ void Profile::construct_front_nodes_of_brick(vector<Point3D>& back_wall, int ite
     
     // here we add the actual coordinates of each new point.
     for (auto& node: front_nodes) {
-        all_wafer_Point3D.push_back(node);
+        all_profile_Point3D.push_back(node);
     }
 }
 
@@ -253,9 +253,9 @@ void Profile::split_prism(int prisma_kind, vector<int> up, vector<int> dn) {
                     (true, true),   (0, 1)                 (outer: true, false)
     */
 
-    vector<int> new_elem_0;
-    vector<int> new_elem_1;
-    vector<int> new_elem_2;
+    array<int, 3> new_elem_0;
+    array<int, 3> new_elem_1;
+    array<int, 3> new_elem_2;
 
     switch (prisma_kind) {
         case 0:
@@ -290,21 +290,21 @@ void Profile::split_prism(int prisma_kind, vector<int> up, vector<int> dn) {
     // append the three new elements indices
     if (measure(new_elem_0) < 1e-12) {
         measure_flag = true;
-        degenerate_elements.push_back(elements_by_vertices.size());
+        degenerate_elements.push_back(profile_elems_by_verts.size());
     }
-    elements_by_vertices.emplace(elements_by_vertices.size(), new_elem_0);
+    profile_elems_by_verts.emplace(profile_elems_by_verts.size(), new_elem_0);
 
     if (measure(new_elem_1) < 1e-12) {
         measure_flag = true;
-        degenerate_elements.push_back(elements_by_vertices.size());
+        degenerate_elements.push_back(profile_elems_by_verts.size());
     }
-    elements_by_vertices.emplace(elements_by_vertices.size(), new_elem_1);
+    profile_elems_by_verts.emplace(profile_elems_by_verts.size(), new_elem_1);
     
     if (measure(new_elem_2) < 1e-12) {
         measure_flag = true;
-        degenerate_elements.push_back(elements_by_vertices.size());
+        degenerate_elements.push_back(profile_elems_by_verts.size());
     }
-    elements_by_vertices.emplace(elements_by_vertices.size(), new_elem_2);
+    profile_elems_by_verts.emplace(profile_elems_by_verts.size(), new_elem_2);
 }
 
 
@@ -391,10 +391,10 @@ void Profile::reset_profile_objects() {
 
     for (int i = 0; i < number_of_bricks_in_wall; ++i) {
         physical_facets[i] = vector<Point3D>({
-            all_wafer_Point3D[indices_for_outer_facets[i][0]],
-            all_wafer_Point3D[indices_for_outer_facets[i][1]],
-            all_wafer_Point3D[indices_for_outer_facets[i][2]],
-            all_wafer_Point3D[indices_for_outer_facets[i][3]]
+            all_profile_Point3D[indices_for_outer_facets[i][0]],
+            all_profile_Point3D[indices_for_outer_facets[i][1]],
+            all_profile_Point3D[indices_for_outer_facets[i][2]],
+            all_profile_Point3D[indices_for_outer_facets[i][3]]
         });
     }
 }
@@ -402,7 +402,7 @@ void Profile::reset_profile_objects() {
 
 void Profile::make_3D_points() {
     /**
-     * this initializes all_wafer_Point3D filling it first
+     * this initializes all_profile_Point3D filling it first
      * with the boundary points of the cylinder taken as input.
     **/
     double local_z;
@@ -410,7 +410,7 @@ void Profile::make_3D_points() {
     for (int l = number_of_layers - 1; l >= 0; l--) {
         local_z = l * height_of_layer;
         for (int j = 0; j < pointlist.size(); j++) {
-            all_wafer_Point3D.push_back(Point3D(pointlist[j], local_z));
+            all_profile_Point3D.push_back(Point3D(pointlist[j], local_z));
         }
     }
 }
@@ -435,12 +435,12 @@ void Profile::build_profile_mesh(int input_size) {
          * all the outer diagonals as 'false' is like
          * a normal state to start the program, but then
          * we will have to calculate the actual diagonals
-         * with the vertices_by_elements container.
+         * with the cylinder_vertices_by_elements container.
          */
         profile_diagonals.push_back(false); 
     }
 
-    int added_index = all_wafer_Point3D.size();
+    int added_index = all_profile_Point3D.size();
 
     cout << "Making profile mesh starting with " 
          << added_index << "( = upper + lower) 3D boundary points."
@@ -492,8 +492,8 @@ void Profile::build_profile_mesh(int input_size) {
 
 	if (debug) {
             cout << "CONTROL POINTS ITERATION NUMBER " << c + 1 << "\n";
-            cout << "Current all_wafer_Point3D size " << added_index << endl;
-            cout << "Current element number " << elements_by_vertices.size() << endl;
+            cout << "Current all_profile_Point3D size " << added_index << endl;
+            cout << "Current element number " << profile_elems_by_verts.size() << endl;
             cout << "number_of_bricks_in_wall " << number_of_bricks_in_wall << "\n";
             cout << "physical_facets " << physical_facets.size() << "\n";
             cout << "profile_diagonals " << profile_diagonals.size() << "\n";
@@ -553,10 +553,10 @@ void Profile::build_profile_mesh(int input_size) {
 // report the max of the whole mesh
 // report the min for the whole ...
 
-double Profile::measure(vector<int>& tetra) {
-    Point3D i_versor = all_wafer_Point3D[tetra[1]] - all_wafer_Point3D[tetra[0]];
-    Point3D j_versor = all_wafer_Point3D[tetra[2]] - all_wafer_Point3D[tetra[0]];
-    Point3D k_versor = all_wafer_Point3D[tetra[3]] - all_wafer_Point3D[tetra[0]];
+double Profile::measure(array<int, 4>& tetra) {
+    Point3D i_versor = all_profile_Point3D[tetra[1]] - all_profile_Point3D[tetra[0]];
+    Point3D j_versor = all_profile_Point3D[tetra[2]] - all_profile_Point3D[tetra[0]];
+    Point3D k_versor = all_profile_Point3D[tetra[3]] - all_profile_Point3D[tetra[0]];
 
     return fabs(i_versor * j_versor.product(k_versor))/6;
 }
