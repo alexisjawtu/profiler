@@ -50,7 +50,7 @@ Point Profile::get_right_orthogonal(Point vector2D)
 
 void Profile::stream_elements_out() {
     ofstream outfile;
-    array<int, 4> current;
+    vector<int> current;
 
     outfile.open(output_dir + filenames::prof_elems, ios::trunc);
 
@@ -253,9 +253,9 @@ void Profile::split_prism(int prisma_kind, vector<int> up, vector<int> dn) {
                     (true, true),   (0, 1)                 (outer: true, false)
     */
 
-    array<int, 3> new_elem_0;
-    array<int, 3> new_elem_1;
-    array<int, 3> new_elem_2;
+    vector<int> new_elem_0;
+    vector<int> new_elem_1;
+    vector<int> new_elem_2;
 
     switch (prisma_kind) {
         case 0:
@@ -553,7 +553,7 @@ void Profile::build_profile_mesh(int input_size) {
 // report the max of the whole mesh
 // report the min for the whole ...
 
-double Profile::measure(array<int, 4>& tetra) {
+double Profile::measure(vector<int>& tetra) {
     Point3D i_versor = all_profile_Point3D[tetra[1]] - all_profile_Point3D[tetra[0]];
     Point3D j_versor = all_profile_Point3D[tetra[2]] - all_profile_Point3D[tetra[0]];
     Point3D k_versor = all_profile_Point3D[tetra[3]] - all_profile_Point3D[tetra[0]];

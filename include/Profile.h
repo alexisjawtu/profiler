@@ -74,7 +74,7 @@ class Profile {
         void construct_front_nodes_of_brick(vector<Point3D>& back_wall, int iteration);
         void split_prism(int prisma_kind, vector<int> up, vector<int> dn);
         void reset_profile_objects();
-        double measure(array<int, 4>& tetra);
+        double measure(vector<int>& tetra);
 
         ofstream _test_;
 
@@ -99,8 +99,7 @@ class Profile {
         vector<int> degenerate_elements;
         vector<int> upper_bdr_points_global_indices;
         map<int, vector<int>> cylinder_verts_by_elems;
-        map<int, array<int, 4>> profile_elems_by_verts;
-        // map<int, vector<int>> elements_by_vertices;
+        map<int, vector<int>> profile_elems_by_verts;
 
         ~Profile();
 
