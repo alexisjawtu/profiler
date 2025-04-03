@@ -5,6 +5,17 @@ import numpy as np
 from typing import Tuple
 from mayavi import mlab
 
+
+"""
+    the following paragraph is not part of mesh_graphics. make_layers refers
+    to the profile layers :)
+
+    For example, the funtion quadr was written to put the control
+    points over a fixed parabola.
+"""
+
+## begin construction of points for layers #########################
+
 n_0         = 5
 thickness_0 = 775
 zetas_0     = np.linspace(thickness_0, thickness_0/2, n_0 + 2)[1:-1]
@@ -26,24 +37,22 @@ def quadr (z, t):
     c = 1/t
     return c * (z - t) * z
 
+## end construction of points for layers ###########################
 
-def draw_isolated_points(vertices_file: str, folder: str = "."):
-    vertices_file     = folder + "/" + vertices_file
-    vertices: np.array = np.loadtxt(vertices_file, delimiter=",")
+
+def draw_isolated_points(vertices_file, folder = "."):
+    vertices_file = folder + "/" + vertices_file
+    vertices 	  = np.loadtxt(vertices_file, delimiter=",")
+
     x = vertices[:, 0]
     y = vertices[:, 1]
     z = vertices[:, 2]
 
-    fig = mlab.figure(1, size=(400, 400), bgcolor=(1, 1, 1))
-
-
-    mlab.points3d(
+    sc = mlab.points3d(
             x, y, z, 
-            scale_factor=.061, 
+            scale_factor=.01, 
             color=(1, 0, 0)
     )
-
-    mlab.show()
 
 
 def plot_all_tetrahedra(
@@ -68,21 +77,21 @@ def plot_all_tetrahedra(
 
     del vertices
     
-    all_elements: np.array = np.loadtxt(connectivity_file, delimiter=elem_delim)
+    all_elements = np.loadtxt(connectivity_file, delimiter=elem_delim)
 
     # Here we have all tetrahedra, which have 6 edges.
     n_con = 0
     for e in all_elements:
         n_con = n_con + 6
 
-    connections = np.zeros((n_con,2))
+    connections = np.zeros((n_con, 2))
 
-    links: np.array = np.array([
+    links = np.array([
                             [0,1,2,3,0,1],
                             [1,2,3,0,2,3]
                         ]).T
 
-    last: int = 0
+    last = 0
 
     try:
         for i in range(len(all_elements)):
@@ -108,40 +117,6 @@ def plot_all_tetrahedra(
     mlab.pipeline.surface(src, color=colors)
 
     src.update()
-
-    # Put some balls to visualize the axes
-    # mlab.points3d(
-    #     [0, 1, 0, 0],
-    #     [0, 0, 1, 0],
-    #     [0, 0, 0, 1],
-    #     scale_factor=.06,
-    #     color=(.5, 1, .5)
-    # )
-
-    # # These two are GenMesh::Point pA and GenMesh::Point pD and Point B
-    # mlab.points3d(
-    #     [.15, -.15, .05],
-    #     [14, 14, 14],
-    #     [0, 0, 0],
-    #     scale_factor=.04,
-    #     color=(.7,.5,.7)
-    # )
-    # # Inner layer scatter
-    # mlab.points3d(
-    #     list(x)[:122],
-    #     list(y)[:122],
-    #     [0] * 122,
-    #     scale_factor=.01,
-    #     color=(.4,.5,.4)
-    # )
-    # # bdry_adj_true
-    # mlab.points3d(
-    #     [0.294000, -0.294000],
-    #     [14.000000, 14.000000],
-    #     [0.077500, 0.077500],
-    #     scale_factor=.02,
-    #     color=(.2,.3,.4)
-    # )
 
     if isolated_points:
 

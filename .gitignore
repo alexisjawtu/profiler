@@ -2,3 +2,7 @@ case*
 *~
 *.diff
 *.swp
+*.dat
+test.cpp
+*.out
+*.o

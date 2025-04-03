@@ -1,6 +1,3 @@
-#include <string>
-#include <iostream>
-
 #include "Profile.h"
 #include "SetParameter.h"
 
@@ -8,87 +5,55 @@
 using namespace std;
 
 
-/** 
-    cppreference.com:
-* 
-    std::size_t is the unsigned integer type of the result of the sizeof operator.
-*   It depends on the architecture.
-
-*/
-
-
-template <class T> void print(T data)
-{
-    cout << T << "\n";
-}
-
-
-template <class T> void print_vector(T& v)
-{
-    for (auto& d: v)
-    {
-        cout << boolalpha << d << ", ";
-    }
-    cout << "\n";
-}
-
-
-int main(int argc, char *argv[])
-{
-    print("\nProfiler v1.2.0 August 2023." 
-          "\vReminder: The boundary points in the input are assumed\n"
-          "to be the 2D points as stored in "
-          "vector<size_t> GenMesh::bdr_pointlist.");
-
-    ifstream boundary_data ("bdr_nodes.dat");
-    ifstream elements_data ("elements.dat");
-    ifstream nodes_data    ("nodes.dat");
-
-    if (!boundary_data || !nodes_data || !elements_data)
-    {
-        print("\vSomething is wrong with the input files.\n");
-        exit(1);
-    }
+int main(int argc, char *argv[]) {
 
     // begin{ all this -> SetParameter
     bool debug_flag {false};
     // number of horizontal mesh layers
-    int tetrahedral_layers {1};
+    int horizontal_mesh_layers {1};
     /**
      * TODO the task here is to eliminate the absurd definition of
      * layers as being 2 (2D layers) when there is only one 3D layer
      *
-     * Eliminate variable layer and
-     * keep only variable tetrahedral_layers.
+     * keep only variable horizontal_mesh_layers and adjust the cycle limits.
     **/ 
-    int layer = tetrahedral_layers + 1;
     // end{ all this -> SetParameter
     
     SetParameter parameters = SetParameter(argc, argv);
 
+    string input_folder {parameters.cylinder_folder};
+    ifstream boundary_data (input_folder + filenames::bdr_vertices_2D);
+    ifstream nodes_data    (input_folder + filenames::cylinder_verts);
+
+    if (!boundary_data || !nodes_data)
+    {
+        print("\vSomething is wrong with the input files.\n");
+        exit(1);
+    }
     /** TODO 
-     * 1- genmesh has to be allocated regularly, not in dynamic memory
-     * 2- if we keep this design of class GenMesh,
-     *    then the constructor simply takes a SetParameter, as in
+     * 1- if we keep this design of class Profile,
+     *    then the constructor simply takes an InputCollection, a.k.a. SetParameter,
+     *   as in
      *  
-     *             GenMesh gm = GenMesh(parameters);
+     *             Profile profile = Profile(parameters);
      *             bla bla bla
     **/ 
 
-    GenMesh* genmesh = new GenMesh(
-                        layer,
+    Profile profile = Profile(
+                        horizontal_mesh_layers + 1,
+			parameters.input.levels,      // levels of profile control points
                         parameters.user_thickness_of_inner_wafer,
                         debug_flag,
                         parameters.output_folder,
                         parameters.profile_parameters
-                    );
+                      );
 
     int current_node {0};
     int comma;                                  // Stores the places of the commas.
     double coordx;                              // 2D coordinates of boundary points.
     double coordy;                              
     int row;                                    // Stores the index of a tetrahedron.
-    int index {0};                              // Stores the index of a 2D point.
+    int number_of_bdr_points {0};               // Stores the number_of_bdr_points of a 2D point.
     vector<int> element;                        // Stores a tetrahedron.
 
     // TODO de-hardcode this 100
@@ -107,78 +72,37 @@ int main(int argc, char *argv[])
         stringstream(point.substr(0, comma)) >> coordy;
         point  = point.substr(comma + 1);
 
-        genmesh->bdr_pointlist.push_back(Point(coordx, coordy));
-        genmesh->pointlist.push_back(Point(coordx, coordy));
+        profile.bdr_pointlist.push_back(Point(coordx, coordy));
+        profile.pointlist.push_back(Point(coordx, coordy));
 
         boundary_data.getline(raw_point, 100);
         point = string(raw_point);
 
-        index ++;
+        number_of_bdr_points ++;
     }
 
     delete[] raw_point;
     boundary_data.close();
 
-    comma = 0;
-    elements_data.seekg(0, elements_data.end);  // set position at the end
-    int length {elements_data.tellg()};         // tell which position is the end
-    elements_data.seekg(0, elements_data.beg);  // set position back to beginning
-
-    char* raw_tetrahedron = new char[length];              
-    elements_data.getline(raw_tetrahedron, length);
-    string tetrahedron(raw_tetrahedron);
-
-    row = 0;
-    while (!elements_data.eof())
-    {
-        comma = tetrahedron.find_first_of(",");
-        stringstream(tetrahedron.substr(0, comma)) >> current_node;
-        element.push_back(current_node);
-        tetrahedron = tetrahedron.substr(comma + 1);
-
-        comma = tetrahedron.find_first_of(",");
-        stringstream(tetrahedron.substr(0, comma)) >> current_node;
-        element.push_back(current_node);
-        tetrahedron = tetrahedron.substr(comma + 1);
-
-        comma = tetrahedron.find_first_of(",");
-        stringstream(tetrahedron.substr(0, comma)) >> current_node;
-        element.push_back(current_node);
-        tetrahedron = tetrahedron.substr(comma + 1);
-
-        comma = tetrahedron.find_first_of(",");
-        stringstream(tetrahedron.substr(0, comma)) >> current_node;
-        element.push_back(current_node);
-
-        genmesh->elements_by_vertices.emplace(row, element);
-        elements_data.getline(raw_tetrahedron, length);
-        tetrahedron = string(raw_tetrahedron);        
-        element     = {};
-        row        += 1;
-    }
-
-    delete[] raw_tetrahedron;
-    elements_data.close();
-
     while (false)
     {
         /**
-         *  TODOs CONTINUE HERE: all this cycle body to receive the 3D nodes missing.
+         *  TODOs: all this cycle body to receive the 3D nodes missing.
          *
          *  Look for the indices in the boundary and erase it
          *  
          *  TASK Research how to use <valarray> to traverse and search a double
-         *  TASK important transform the code in this 'main' into methods of GenMesh.
+         *  TASK important transform the code in this 'main' into methods of Profile.
                  leave a minimal 'int main () {}'
          *  TASK replace the prints and couts with template print<T>
         **/
     }
 
-    genmesh->find_global_coordinates_for_boundary();
-    genmesh->make_3D_points();
-    genmesh->build_profile_mesh(index);
-    genmesh->stream_elements_out();
-    genmesh->stream_nodes_out();
+    // profile.find_global_coordinates_for_boundary();
+    profile.make_3D_points();
+    profile.build_profile_mesh(number_of_bdr_points);
+    profile.stream_elements_out();
+    profile.stream_nodes_out();
     
     return 0;
 }
