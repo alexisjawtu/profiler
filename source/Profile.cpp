@@ -3,12 +3,14 @@
 
 Profile::Profile(
     int n_layers,
+    int levels_of_profile_control_points,
     double h_layer,
     bool debug_flag,
     string prefix,
     map<string, valarray<double>>& profile_params)
 {
     number_of_layers = n_layers;
+    control_point_levels = levels_of_profile_control_points;
     height_of_layer = h_layer;
     debug = debug_flag;
     output_dir = prefix;
@@ -488,7 +490,7 @@ void Profile::build_profile_mesh(int input_size) {
     }
     
     // Iterate "control point levels"
-    for (int c = 0; c < 5; c++) {
+    for (int c = 0; c < control_point_levels; c++) {
 
 	if (debug) {
             cout << "CONTROL POINTS ITERATION NUMBER " << c + 1 << "\n";

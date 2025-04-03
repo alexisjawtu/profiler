@@ -10,15 +10,13 @@ int main(int argc, char *argv[]) {
     // begin{ all this -> SetParameter
     bool debug_flag {false};
     // number of horizontal mesh layers
-    int tetrahedral_layers {1};
+    int horizontal_mesh_layers {1};
     /**
      * TODO the task here is to eliminate the absurd definition of
      * layers as being 2 (2D layers) when there is only one 3D layer
      *
-     * Eliminate variable layer and
-     * keep only variable tetrahedral_layers.
+     * keep only variable horizontal_mesh_layers and adjust the cycle limits.
     **/ 
-    int layer = tetrahedral_layers + 1;
     // end{ all this -> SetParameter
     
     SetParameter parameters = SetParameter(argc, argv);
@@ -42,7 +40,8 @@ int main(int argc, char *argv[]) {
     **/ 
 
     Profile profile = Profile(
-                        layer,
+                        horizontal_mesh_layers + 1,
+			parameters.input.levels,      // levels of profile control points
                         parameters.user_thickness_of_inner_wafer,
                         debug_flag,
                         parameters.output_folder,

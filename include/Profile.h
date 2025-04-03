@@ -43,6 +43,7 @@ class Profile {
         string output_dir;
 
         int number_of_layers;
+        int control_point_levels;
         // TODO: rename the following two as "base case" "general case"
         // in order to develop the recursion
         int number_of_outer_walls = 0;
@@ -82,6 +83,7 @@ class Profile {
     
         Profile(
             int n_layers,
+	    int levels_of_profile_control_points,
             double h_layer,
             bool debug_flag,
             string prefix,

@@ -20,6 +20,7 @@ using namespace std;
 class SetParameter {
     public:
 
+        Input input;
         string cylinder_folder;
         string output_folder;
         double user_thickness_of_inner_wafer;  // WAS t
@@ -31,7 +32,6 @@ class SetParameter {
 
     private:
 
-        Input input;
         int profile_layers_number = 5;
         int argv_num_of_input;
 
