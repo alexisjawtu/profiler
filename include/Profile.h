@@ -98,7 +98,7 @@ class Profile {
         vector<bool> profile_diagonals;
         vector<int> degenerate_elements;
         vector<int> upper_bdr_points_global_indices;
-        map<int, vector<int>> cylinder_verts_by_elems;
+        map<int, list<int>> cylinder_verts_by_elems;
         map<int, vector<int>> profile_elems_by_verts;
 
         ~Profile();

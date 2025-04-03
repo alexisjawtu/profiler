@@ -1,5 +1,7 @@
-# echo "std 17"
-# c++ -std=c++17 ./source/*.cpp -I ./include  -o ./profile
+#!/usr/bin/bash
 
-echo "std 20"
-c++ -std=c++20 ./source/*.cpp -I ./include  -o ./profile.o
+current=20
+echo "std $current"
+c++ -std=c++$current ./source/*.cpp -I ./include  -o ./profile.o
+
+echo "Compilation finished with return status $?"

@@ -7,14 +7,6 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
-    /*
-    print("\nProfiler v1.2.0 August 2023." 
-          "\vReminder: The boundary points in the input are assumed\n"
-          "to be the 2D points as stored in "
-          "vector<size_t> Cylinder::bdr_pointlist.");
-    */
-
-
     // begin{ all this -> SetParameter
     bool debug_flag {false};
     // number of horizontal mesh layers

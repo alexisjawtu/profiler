@@ -134,15 +134,15 @@ void Profile::orient_profile_diagonals() {
              << cuadrilaterals << endl;
     }
 
-    for (auto& elements_list: profile_elems_by_verts)
+    for (auto& elements_list: cylinder_verts_by_elems)
         elements_list.second.sort();
 
     vector<int>::iterator a;
     list<int> first, second;
  
     for (int c = 0; c < cuadrilaterals; c++) {
-        first  = profile_elems_by_verts[radial_sorted_upper_bdr_indices[c]];
-        second = profile_elems_by_verts[radial_sorted_lower_bdr_indices[c + 1]];
+        first  = cylinder_verts_by_elems[radial_sorted_upper_bdr_indices[c]];
+        second = cylinder_verts_by_elems[radial_sorted_lower_bdr_indices[c + 1]];
 
         vector<int> intersection(max(first.size(), second.size()));
     
