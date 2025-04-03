@@ -91,7 +91,7 @@ void SetParameter::get_from_args(int argc, char* argv[]) {
     // TODO: this method will dissapear. Do not use this anymore. 
     
     argv_num_of_input = parameter_names.size()
-                        * profile_layers_number
+                        * 5
                         + extra_names.size();
 
     if (argc - 1 != argv_num_of_input) {

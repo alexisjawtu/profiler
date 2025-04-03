@@ -32,7 +32,6 @@ class SetParameter {
 
     private:
 
-        int profile_layers_number = 5;
         int argv_num_of_input;
 
         array<const char*, 2> extra_names{"input_location", "thickness"};
