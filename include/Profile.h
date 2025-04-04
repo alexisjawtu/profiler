@@ -40,6 +40,7 @@ class Profile {
 
         bool debug;
         bool add_tetrahedra_within;
+        string scalar_parameters;
         string output_dir;
 
         int number_of_layers;
@@ -82,6 +83,7 @@ class Profile {
     public:
     
         Profile(
+            string scalar_params,
             int n_layers,
 	    int levels_of_profile_control_points,
             double h_layer,

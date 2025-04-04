@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
     **/ 
 
     Profile profile = Profile(
+		        parameters.input.scalars_file_name,
                         horizontal_mesh_layers + 1,
 			parameters.input.levels,      // levels of profile control points
                         parameters.user_thickness_of_inner_wafer,

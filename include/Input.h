@@ -13,6 +13,7 @@ class Input {
     public:
         std::map<std::string, double> prof_params;
         std::string cylinder_folder;
+	std::string scalars_file_name;
         double thickness;
         double levels;
 
@@ -32,6 +33,7 @@ class Input {
 
         Input(std::string inputfile)
         {
+            this -> scalars_file_name = inputfile;
             std::ifstream input(inputfile);
             std::string current_name;
             double current_value;

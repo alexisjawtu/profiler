@@ -2,6 +2,7 @@
 
 
 Profile::Profile(
+    string scalar_params,
     int n_layers,
     int levels_of_profile_control_points,
     double h_layer,
@@ -9,6 +10,7 @@ Profile::Profile(
     string prefix,
     map<string, valarray<double>>& profile_params)
 {
+    scalar_parameters = scalar_params;
     number_of_layers = n_layers;
     control_point_levels = levels_of_profile_control_points;
     height_of_layer = h_layer;
@@ -54,7 +56,9 @@ void Profile::stream_elements_out() {
     ofstream outfile;
     vector<int> current;
 
-    outfile.open(output_dir + filenames::prof_elems, ios::trunc);
+    outfile.open(output_dir 
+		    + scalar_parameters + "-"
+		    + filenames::prof_elems, ios::trunc);
 
     for (int e = 0; e < profile_elems_by_verts.size(); e++) {
         current = profile_elems_by_verts[e];
@@ -167,7 +171,9 @@ void Profile::stream_diagonals_out() {
 
 void Profile::stream_nodes_out() {
     ofstream nodes_file;
-    nodes_file.open(output_dir + filenames::prof_verts, ios::trunc);
+    nodes_file.open(output_dir
+		    + scalar_parameters + "-"
+		    + filenames::prof_verts, ios::trunc);
     for (auto& p: all_profile_Point3D) {
         nodes_file << p.split(',') << endl;
     }
@@ -178,7 +184,9 @@ void Profile::stream_nodes_out() {
 void Profile::stream_boundary_nodes_out() {
 
     ofstream sorted_boundary_nodes_file;
-    sorted_boundary_nodes_file.open(output_dir + filenames::sorted_3D_bdr_vertices, ios::trunc);
+    sorted_boundary_nodes_file.open(output_dir
+		    + scalar_parameters + "-"
+		    + filenames::sorted_3D_bdr_vertices, ios::trunc);
 
     for (int l = number_of_layers - 1; l >= 0; l--) {
 
