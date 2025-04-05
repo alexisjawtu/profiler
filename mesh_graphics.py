@@ -39,6 +39,7 @@ def quadr (z, t):
 
 ## end construction of points for layers ###########################
 
+path = "/home/alexis/code/tests_sheets/profile/"
 
 def draw_isolated_points(vertices_file, folder = "."):
     vertices_file = folder + "/" + vertices_file
