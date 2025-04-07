@@ -6,3 +6,4 @@ case*
 test.cpp
 *.out
 *.o
+input*

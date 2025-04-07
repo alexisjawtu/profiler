@@ -85,7 +85,7 @@ class Profile {
         Profile(
             string scalar_params,
             int n_layers,
-	    int levels_of_profile_control_points,
+            int levels_of_profile_control_points,
             double h_layer,
             bool debug_flag,
             string prefix,
@@ -94,8 +94,7 @@ class Profile {
 
         bool measure_flag = false;
         int cuadrilaterals = 0;
-    
-        vector<Point> pointlist;
+
         vector<Point> bdr_pointlist;
         the_map sorted_boundary_points;
         vector<Point3D> all_profile_Point3D;
@@ -119,7 +118,7 @@ class Profile {
         void print_vector(vector<bool>& v);
         void find_global_coordinates_for_boundary();
         void make_3D_points();
-        void build_profile_mesh(int number_of_points_in_the_input);
+        void build_profile_mesh();
 
 };
 

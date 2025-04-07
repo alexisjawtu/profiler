@@ -40,9 +40,9 @@ int main(int argc, char *argv[]) {
     **/ 
 
     Profile profile = Profile(
-		        parameters.input.scalars_file_name,
+                        parameters.input.scalars_file_name,
                         horizontal_mesh_layers + 1,
-			parameters.input.levels,      // levels of profile control points
+                        parameters.input.levels,      // levels of profile control points
                         parameters.user_thickness_of_inner_wafer,
                         debug_flag,
                         parameters.output_folder,
@@ -54,7 +54,6 @@ int main(int argc, char *argv[]) {
     double coordx;                              // 2D coordinates of boundary points.
     double coordy;                              
     int row;                                    // Stores the index of a tetrahedron.
-    int number_of_bdr_points {0};               // Stores the number_of_bdr_points of a 2D point.
     vector<int> element;                        // Stores a tetrahedron.
 
     // TODO de-hardcode this 100
@@ -74,12 +73,10 @@ int main(int argc, char *argv[]) {
         point  = point.substr(comma + 1);
 
         profile.bdr_pointlist.push_back(Point(coordx, coordy));
-        profile.pointlist.push_back(Point(coordx, coordy));
 
         boundary_data.getline(raw_point, 100);
         point = string(raw_point);
 
-        number_of_bdr_points ++;
     }
 
     delete[] raw_point;
@@ -101,7 +98,7 @@ int main(int argc, char *argv[]) {
 
     // profile.find_global_coordinates_for_boundary();
     profile.make_3D_points();
-    profile.build_profile_mesh(number_of_bdr_points);
+    profile.build_profile_mesh();
     profile.stream_elements_out();
     profile.stream_nodes_out();
     

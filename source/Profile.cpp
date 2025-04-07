@@ -106,7 +106,7 @@ void Profile::radial_sort_boundary_points() {
     for (int j = 0; j < cuadrilaterals; j++)
     {
         radial_sorted_lower_bdr_indices.push_back
-            (pointlist.size() + radial_sorted_upper_bdr_indices[j]);
+            (bdr_pointlist.size() + radial_sorted_upper_bdr_indices[j]);
     }
     // Repeat first indices to have the last cuadrilateral.
     if (!radial_sorted_upper_bdr_indices.size())
@@ -419,21 +419,25 @@ void Profile::make_3D_points() {
 
     for (int l = number_of_layers - 1; l >= 0; l--) {
         local_z = l * height_of_layer;
-        for (int j = 0; j < pointlist.size(); j++) {
-            all_profile_Point3D.push_back(Point3D(pointlist[j], local_z));
-        }
+
+        for (auto& bp: bdr_pointlist)
+            all_profile_Point3D.push_back(Point3D(bp, local_z));
+
+       // for (int j = 0; j < bdr_pointlist.size(); j++) {
+        //    all_profile_Point3D.push_back(Point3D(bdr_pointlist[j], local_z));
+       // }
     }
 }
 
 
-void Profile::build_profile_mesh(int input_size) {
+void Profile::build_profile_mesh() {
     /**
      * this input_size is the number_of_bdr_points as
      * taken in 2D (that is, only one circle of points, 
      * before the construction of the 3D embedded points.
     **/
 
-    for (int i = 0; i < input_size; i++)
+    for (int i = 0; i < bdr_pointlist.size(); i++)
     {
         /**
          * CAUTION here the 'global' indices start with i = 0

@@ -68,7 +68,6 @@ void SetParameter::get_from_ui() {
 
 void SetParameter::get_from_file(char* file) {
     input = Input(file);
-    input.print();
     user_thickness_of_inner_wafer = input.thickness;
     cylinder_folder = input.cylinder_folder;
 
