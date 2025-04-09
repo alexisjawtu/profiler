@@ -1,5 +1,4 @@
 #include "Profile.h"
-#include "SetParameter.h"
 
 
 using namespace std;
@@ -71,7 +70,7 @@ int main(int argc, char *argv[]) {
 
     // profile.find_global_coordinates_for_boundary();
     profile.make_3D_points();
-    profile.build_profile_mesh();
+    profile.build_mesh();
     profile.stream_elements_out();
     profile.stream_nodes_out();
     

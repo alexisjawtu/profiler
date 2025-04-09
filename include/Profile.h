@@ -3,7 +3,6 @@
 
 #include <string>
 #include <list>
-#include <vector>
 #include <map>
 #include <valarray>
 #include <algorithm>
@@ -11,8 +10,6 @@
 #include <math.h>
 
 #include "the_map.h"
-#include "Point.h"
-#include "Point3D.h"
 #include "toolbox.h"
 #include "SetParameter.h"
 
@@ -29,10 +26,6 @@ struct Prism {
     vector<int> back;
 };
 
-typedef tuple<vector<int>, vector<int>, int> Brick;
-
-// We may use this to measure elements and work the matrix condition
-typedef tuple<Point3D, Point3D, Point3D, Point3D> Tetrahedron;
 
 
 class Profile {
@@ -74,7 +67,7 @@ class Profile {
     
         void orient_profile_diagonals();
         void add_tetrahedra_within_prisms();
-        void construct_front_nodes_of_brick(vector<Point3D>& back_wall, int iteration);
+        void yield_brick_front_nodes(vector<Point3D>& back_wall, int iteration);
         void split_prism(int prisma_kind, vector<int> up, vector<int> dn);
         void reset_profile_objects();
         double measure(vector<int>& tetra);
@@ -94,8 +87,8 @@ class Profile {
             map<string, valarray<double>>& profile_params
         );
 */
-        bool measure_flag = false;
-        int cuadrilaterals = 0;
+        bool measure_flag {false};
+        int cuadrilaterals {0};
 
         vector<Point> bdr_pointlist;
         the_map sorted_boundary_points;
@@ -120,7 +113,7 @@ class Profile {
         void print_vector(vector<bool>& v);
         void find_global_coordinates_for_boundary();
         void make_3D_points();
-        void build_profile_mesh();
+        void build_mesh();
 
 };
 

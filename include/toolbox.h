@@ -15,9 +15,17 @@
 #include <string>
 #include <string_view>
 #include <system_error>
+#include <vector>
  
+#include "Point3D.h"
 
-namespace constants {
+typedef tuple<vector<int>, vector<int>, int> Brick;
+// We may use this to measure elements and work the matrix condition
+typedef tuple<Point3D, Point3D, Point3D, Point3D> Tetrahedron;
+
+
+namespace constants
+{
     const bool debug {false};
     const int horizontal_mesh_layers {1};
     const double pi {3.141592653589793};
@@ -26,7 +34,8 @@ namespace constants {
 }
 
 
-namespace filenames {
+namespace filenames
+{
     const char scalar_parameters[] {"input.txt"};
     const char sorted_3D_bdr_vertices[] {"sorted_boundary_vertices_on_space.csv"};
     const char bdr_vertices_2D[] {"2D_bdr_vertices.dat"};

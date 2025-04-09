@@ -45,19 +45,12 @@ Point Profile::get_right_orthogonal(Point vector2D)
 
 
 void Profile::stream_elements_out() {
-    ofstream outfile;
-    vector<int> current;
-
-    outfile.open(output_dir 
+    ofstream outfile {output_dir 
 		    + scalar_parameters + "-"
-		    + filenames::prof_elems, ios::trunc);
+		    + filenames::prof_elems, ios::trunc};
  
-    for (/* TODO poner auto!! :D:D:D*/ int e = 0; e < profile_elems_by_verts.size(); e++) {
-        current = profile_elems_by_verts[e];
-        outfile << current[0] << ", " << current[1] << ", "
-                << current[2] << ", " << current[3] << endl;
-    }
-    outfile.close();
+    for (auto& e: profile_elems_by_verts)
+        outfile << e.second[0] << ", " << e.second[1] << ", " << e.second[2] << ", " << e.second[3] << endl;
 }
 
 
@@ -69,13 +62,10 @@ Point Profile::project2D(Point3D p) {
 void Profile::radial_sort_boundary_points() {
     vector<Point> original_points(bdr_pointlist);
 
-    int minimal_index;
-    Point minimal_point;
-
     for (int j = 0; j < bdr_pointlist.size(); j++) {
 
-        minimal_index = 0;
-        minimal_point = original_points[0];
+        int minimal_index {0};
+        Point minimal_point {original_points[0]};
 
         for (int r = 1; r < original_points.size(); r++) {
             if (original_points[r] < minimal_point) {
@@ -92,14 +82,19 @@ void Profile::radial_sort_boundary_points() {
         upper_bdr_points_global_indices.erase
             (upper_bdr_points_global_indices.begin() + minimal_index);
     }
+    
+    this -> cuadrilaterals = radial_sorted_upper_bdr_indices.size();
+    for (auto& index: radial_sorted_upper_bdr_indices)
+        radial_sorted_lower_bdr_indices.push_back(bdr_pointlist.size() + index);
 
-    cuadrilaterals = radial_sorted_upper_bdr_indices.size();
-
-    for (int j = 0; j < cuadrilaterals; j++)
+/* TODO: test and remove
+    for (int j = 0; j < this -> cuadrilaterals; j++)
     {
         radial_sorted_lower_bdr_indices.push_back
             (bdr_pointlist.size() + radial_sorted_upper_bdr_indices[j]);
     }
+*/
+
     // Repeat first indices to have the last cuadrilateral.
     if (!radial_sorted_upper_bdr_indices.size())
     {
@@ -129,25 +124,33 @@ void Profile::orient_profile_diagonals() {
 
     if (constants::debug) {
         cout << "Number of vertical cuadrilaterals around profile: " 
-             << cuadrilaterals << endl;
+             << this -> cuadrilaterals << endl;
     }
 
     for (auto& elements_list: cylinder_verts_by_elems)
         elements_list.second.sort();
 
-    vector<int>::iterator a;
-    list<int> first, second;
  
-    for (int c = 0; c < cuadrilaterals; c++) {
-        first  = cylinder_verts_by_elems[radial_sorted_upper_bdr_indices[c]];
-        second = cylinder_verts_by_elems[radial_sorted_lower_bdr_indices[c + 1]];
+    for (int c = 0; c < this -> cuadrilaterals; c++) {
+
+        list<int> first {cylinder_verts_by_elems[radial_sorted_upper_bdr_indices[c]]};
+        list<int> second {cylinder_verts_by_elems[radial_sorted_lower_bdr_indices[c + 1]]};
 
         vector<int> intersection(max(first.size(), second.size()));
     
-        a = set_intersection(first.begin(), first.end(), second.begin(), second.end(), intersection.begin());
-        intersection.resize(a - intersection.begin());
+        vector<int>::iterator a
+        {
+            set_intersection
+            (
+                first.begin(), first.end(),
+                second.begin(), second.end(),
+                intersection.begin()
+            )
+        };
 
+        intersection.resize(a - intersection.begin());
         profile_diagonals.push_back(intersection.size());
+
     }
 }
 
@@ -175,10 +178,9 @@ void Profile::stream_nodes_out() {
 
 void Profile::stream_boundary_nodes_out() {
 
-    ofstream sorted_boundary_nodes_file;
-    sorted_boundary_nodes_file.open(output_dir
+    ofstream sorted_boundary_nodes_file {output_dir
 		    + scalar_parameters + "-"
-		    + filenames::sorted_3D_bdr_vertices, ios::trunc);
+		    + filenames::sorted_3D_bdr_vertices, ios::trunc};
 
     for (int l = number_of_layers - 1; l >= 0; l--) {
 
@@ -191,7 +193,7 @@ void Profile::stream_boundary_nodes_out() {
 }
 
 
-void Profile::construct_front_nodes_of_brick(vector<Point3D>& back_wall, int iteration) {
+void Profile::yield_brick_front_nodes(vector<Point3D>& back_wall, int iteration) {
 
     /* back_wall represents a 4 x 3 matrix containing the coordinates
        the appended vector is a 4 x 3 matrix with the front coordinates
@@ -422,12 +424,7 @@ void Profile::make_3D_points() {
 }
 
 
-void Profile::build_profile_mesh() {
-    /**
-     * this input_size is the number_of_bdr_points as
-     * taken in 2D (that is, only one circle of points, 
-     * before the construction of the 3D embedded points.
-    **/
+void Profile::build_mesh() {
 
     for (int i = 0; i < bdr_pointlist.size(); i++)
     {
@@ -513,7 +510,7 @@ void Profile::build_profile_mesh() {
 
         for (int b = 0; b < number_of_bricks_in_wall; b++) {
             // Append actual R3 points to nodes.csv
-            construct_front_nodes_of_brick(physical_facets[b], c);
+            yield_brick_front_nodes(physical_facets[b], c);
             this_diagonal = profile_diagonals[b];
 
             back_idxs = {radial_sorted_upper_bdr_indices[b],
