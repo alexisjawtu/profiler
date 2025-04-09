@@ -7,48 +7,21 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
-    // begin{ all this -> SetParameter
-    bool debug_flag {false};
-    // number of horizontal mesh layers
-    int horizontal_mesh_layers {1};
-    /**
-     * TODO the task here is to eliminate the absurd definition of
-     * layers as being 2 (2D layers) when there is only one 3D layer
-     *
-     * keep only variable horizontal_mesh_layers and adjust the cycle limits.
-    **/ 
-    // end{ all this -> SetParameter
-    
-    SetParameter parameters = SetParameter(argc, argv);
+    SetParameter parameters {argc, argv};
 
     string input_folder {parameters.cylinder_folder};
-    ifstream boundary_data (input_folder + filenames::bdr_vertices_2D);
-    ifstream nodes_data    (input_folder + filenames::cylinder_verts);
+    ifstream boundary_data {input_folder + filenames::bdr_vertices_2D};
+    ifstream nodes_data {input_folder + filenames::cylinder_verts};
 
     if (!boundary_data || !nodes_data)
     {
         print("\vSomething is wrong with the input files.\n");
         exit(1);
     }
-    /** TODO 
-     * 1- if we keep this design of class Profile,
-     *    then the constructor simply takes an InputCollection, a.k.a. SetParameter,
-     *   as in
-     *  
-     *             Profile profile = Profile(parameters);
-     *             bla bla bla
-    **/ 
 
-    Profile profile = Profile(
-                        parameters.input.scalars_file_name,
-                        horizontal_mesh_layers + 1,
-                        parameters.input.levels,      // levels of profile control points
-                        parameters.user_thickness_of_inner_wafer,
-                        debug_flag,
-                        parameters.output_folder,
-                        parameters.profile_parameters
-                      );
-
+//    auto profile = Profile(parameters);
+    Profile profile {parameters};
+    
     int current_node {0};
     int comma;                                  // Stores the places of the commas.
     double coordx;                              // 2D coordinates of boundary points.

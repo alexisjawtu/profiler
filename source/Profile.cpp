@@ -1,27 +1,19 @@
 #include "Profile.h"
 
 
-Profile::Profile(
-    string scalar_params,
-    int n_layers,
-    int levels_of_profile_control_points,
-    double h_layer,
-    bool debug_flag,
-    string prefix,
-    map<string, valarray<double>>& profile_params)
+Profile::Profile(SetParameter& params)
+
 {
-    scalar_parameters = scalar_params;
-    number_of_layers = n_layers;
-    control_point_levels = levels_of_profile_control_points;
-    height_of_layer = h_layer;
-    debug = debug_flag;
-    output_dir = prefix;
+    scalar_parameters = params.input.scalars_file_name;
+    number_of_layers = constants::horizontal_mesh_layers + 1;
+    // Number of levels of control points to build the profile.
+    control_point_levels = params.input.levels;
+    height_of_layer = params.user_thickness_of_inner_wafer;
+    output_dir = params.output_folder;
 
-
-    // TODO: remove these three, as we can call the map<> profile_params directly
-    delta_over_plane_xy = profile_params["Width"];  // {delta_xy_0, delta_xy_1, delta_xy_2, delta_xy_3, delta_xy_4};
-    upper_z             = profile_params["Ceiling"];  // {upper_z_0, upper_z_1, upper_z_2, upper_z_3, upper_z_4};
-    lower_z             = profile_params["Floor"];  // {lower_z_0, lower_z_1, lower_z_2, lower_z_3, lower_z_4};
+    delta_over_plane_xy = params.profile_parameters["Width"];
+    upper_z             = params.profile_parameters["Ceiling"];
+    lower_z             = params.profile_parameters["Floor"];
 
     case_translator.emplace(make_pair(false, false), make_pair(1, 0));
     case_translator.emplace(make_pair(false, true),  make_pair(3, 1));
@@ -59,8 +51,8 @@ void Profile::stream_elements_out() {
     outfile.open(output_dir 
 		    + scalar_parameters + "-"
 		    + filenames::prof_elems, ios::trunc);
-
-    for (int e = 0; e < profile_elems_by_verts.size(); e++) {
+ 
+    for (/* TODO poner auto!! :D:D:D*/ int e = 0; e < profile_elems_by_verts.size(); e++) {
         current = profile_elems_by_verts[e];
         outfile << current[0] << ", " << current[1] << ", "
                 << current[2] << ", " << current[3] << endl;
@@ -135,7 +127,7 @@ void Profile::orient_profile_diagonals() {
     
     */
 
-    if (debug) {
+    if (constants::debug) {
         cout << "Number of vertical cuadrilaterals around profile: " 
              << cuadrilaterals << endl;
     }
@@ -216,10 +208,10 @@ void Profile::construct_front_nodes_of_brick(vector<Point3D>& back_wall, int ite
     Point front_point1  = project2D(middle_dn) + normal_dir_dn * delta_over_plane_xy[iteration];
     Point radial_point0 = project2D(back_wall[3]) * (1 + delta_over_plane_xy[iteration]/project2D(back_wall[3]).norm());
     Point radial_point1 = project2D(back_wall[2]) * (1 + delta_over_plane_xy[iteration]/project2D(back_wall[2]).norm());
-    vector<Point3D> front_nodes = {Point3D(front_point0,  upper_z[iteration]),
-                                   Point3D(front_point1,  lower_z[iteration]),
-                                   Point3D(radial_point0, upper_z[iteration]),
-                                   Point3D(radial_point1, lower_z[iteration])};
+    vector<Point3D> front_nodes {Point3D(front_point0,  upper_z[iteration]),
+                                 Point3D(front_point1,  lower_z[iteration]),
+                                 Point3D(radial_point0, upper_z[iteration]),
+                                 Point3D(radial_point1, lower_z[iteration])};
     
     // here we add the actual coordinates of each new point.
     for (auto& node: front_nodes) {
@@ -504,7 +496,7 @@ void Profile::build_profile_mesh() {
     // Iterate "control point levels"
     for (int c = 0; c < control_point_levels; c++) {
 
-	if (debug) {
+	if (constants::debug) {
             cout << "CONTROL POINTS ITERATION NUMBER " << c + 1 << "\n";
             cout << "Current all_profile_Point3D size " << added_index << endl;
             cout << "Current element number " << profile_elems_by_verts.size() << endl;

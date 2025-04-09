@@ -14,6 +14,7 @@
 #include "Point.h"
 #include "Point3D.h"
 #include "toolbox.h"
+#include "SetParameter.h"
 
 
 using namespace std;
@@ -81,7 +82,8 @@ class Profile {
         ofstream _test_;
 
     public:
-    
+        Profile(SetParameter& params);
+/*    
         Profile(
             string scalar_params,
             int n_layers,
@@ -91,7 +93,7 @@ class Profile {
             string prefix,
             map<string, valarray<double>>& profile_params
         );
-
+*/
         bool measure_flag = false;
         int cuadrilaterals = 0;
 

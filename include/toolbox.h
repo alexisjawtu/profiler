@@ -18,9 +18,11 @@
  
 
 namespace constants {
-    const double pi = 3.141592653589793;
-    const double two_pi = 6.283185307179586;
-    const double radian = 0.017453292519943295;
+    const bool debug {false};
+    const int horizontal_mesh_layers {1};
+    const double pi {3.141592653589793};
+    const double two_pi {6.283185307179586};
+    const double radian {0.017453292519943295};
 }
 
 
