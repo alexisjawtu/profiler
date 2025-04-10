@@ -5,11 +5,10 @@ Profile::Profile(SetParameter& params)
 
 {
     scalar_parameters = params.input.scalars_file_name;
-    number_of_layers = constants::horizontal_mesh_layers + 1;
     // Number of levels of control points to build the profile.
     control_point_levels = params.input.levels;
     height_of_layer = params.user_thickness_of_inner_wafer;
-    output_dir = params.output_folder;
+    // output_dir = params.output_folder;
 
     delta_over_plane_xy = params.profile_parameters["Width"];
     upper_z             = params.profile_parameters["Ceiling"];
@@ -45,7 +44,7 @@ Point Profile::get_right_orthogonal(Point vector2D)
 
 
 void Profile::stream_elements_out() {
-    ofstream outfile {output_dir 
+    ofstream outfile {filenames::output_dir 
 		    + scalar_parameters + "-"
 		    + filenames::prof_elems, ios::trunc};
  
@@ -166,7 +165,7 @@ void Profile::stream_diagonals_out() {
 
 void Profile::stream_nodes_out() {
     ofstream nodes_file;
-    nodes_file.open(output_dir
+    nodes_file.open(filenames::output_dir
 		    + scalar_parameters + "-"
 		    + filenames::prof_verts, ios::trunc);
     for (auto& p: all_profile_Point3D) {
@@ -178,11 +177,11 @@ void Profile::stream_nodes_out() {
 
 void Profile::stream_boundary_nodes_out() {
 
-    ofstream sorted_boundary_nodes_file {output_dir
+    ofstream sorted_boundary_nodes_file {filenames::output_dir
 		    + scalar_parameters + "-"
 		    + filenames::sorted_3D_bdr_vertices, ios::trunc};
 
-    for (int l = number_of_layers - 1; l >= 0; l--) {
+    for (int l = constants::horizontal_mesh_layers; l >= 0; l--) {
 
         for (auto& p: sorted_boundary_points) {
             sorted_boundary_nodes_file << Point3D(p.second, l * height_of_layer);
@@ -411,7 +410,7 @@ void Profile::make_3D_points() {
     **/
     double local_z;
 
-    for (int l = number_of_layers - 1; l >= 0; l--) {
+    for (int l = constants::horizontal_mesh_layers; l >= 0; l--) {
         local_z = l * height_of_layer;
 
         for (auto& bp: bdr_pointlist)
@@ -462,7 +461,7 @@ void Profile::build_mesh() {
     // Wall of 3D points for base case.
     // TODO: perhaps we can omit the construction of wall_of_Point3D
     // and do the base case physical_facets directly.
-    for (int l = number_of_layers - 1; l >= 0; l--) {
+    for (int l = constants::horizontal_mesh_layers; l >= 0; l--) {
         local_z = l * height_of_layer;
         for (auto& p: sorted_boundary_points) {
             wall_of_Point3D.push_back(Point3D(p.second, local_z));

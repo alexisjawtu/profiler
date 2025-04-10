@@ -36,6 +36,7 @@ namespace constants
 
 namespace filenames
 {
+    const char output_dir[] {"./"};
     const char scalar_parameters[] {"input.txt"};
     const char sorted_3D_bdr_vertices[] {"sorted_boundary_vertices_on_space.csv"};
     const char bdr_vertices_2D[] {"2D_bdr_vertices.dat"};

@@ -13,7 +13,7 @@ SetParameter::SetParameter(int argc, char* argv[]) {
     profile_parameters["Floor"]   = valarray<double> (5);
     profile_parameters["Width"]   = valarray<double> (5);
 
-    output_folder = string("./");
+    // output_folder = string("./");
 
     switch (argc)
     {
@@ -129,7 +129,7 @@ void SetParameter::get_from_args(int argc, char* argv[]) {
 
 }
 
-
+/*
 void SetParameter::check_output_folder(string folder) {
 
     if (false) {
@@ -148,3 +148,4 @@ void SetParameter::check_output_folder(string folder) {
     }
 
 }
+*/

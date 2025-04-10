@@ -22,7 +22,7 @@ class SetParameter {
 
         Input input;
         string cylinder_folder;
-        string output_folder;
+//        string output_folder;
         double user_thickness_of_inner_wafer;  // WAS t
 
         map<string, valarray<double>> profile_parameters;

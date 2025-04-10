@@ -27,7 +27,6 @@ struct Prism {
 };
 
 
-
 class Profile {
 
     private:
@@ -35,9 +34,8 @@ class Profile {
         bool debug;
         bool add_tetrahedra_within;
         string scalar_parameters;
-        string output_dir;
+//        string output_dir;
 
-        int number_of_layers;
         int control_point_levels;
         // TODO: rename the following two as "base case" "general case"
         // in order to develop the recursion
