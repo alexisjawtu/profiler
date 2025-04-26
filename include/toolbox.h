@@ -27,8 +27,8 @@ typedef tuple<Point3D, Point3D, Point3D, Point3D> Tetrahedron;
 namespace constants
 {
     const bool debug {false};
-    const int horizontal_mesh_layers {1};
-    const double pi {3.141592653589793};
+    constexpr int horizontal_mesh_layers {1};
+    constexpr double pi {3.141592653589793};
     const double two_pi {6.283185307179586};
     const double radian {0.017453292519943295};
 }

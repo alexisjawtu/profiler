@@ -1,3 +1,19 @@
+// main.cpp
+
+/*
+    The name of the program
+    The purpose of the program
+    Who wrote this code and when
+    Version numbers
+    What complicated code fragments are supposed to do
+    What the general design ideas are
+    How the source code is organized
+    What assumptions are made about inputs
+    What parts of the code are still missing and what cases are still not handled
+    References to supporting material (e.g., to a book explaining the algorithms used)
+*/
+
+
 #include "Profile.h"
 
 
